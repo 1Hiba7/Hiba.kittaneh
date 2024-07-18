@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>عد تنازلي لعيد الأضحى</title>
+<style>
+  body {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to left, #E0E0FF, #FFE0E0);
+    color: black;
+  }
+  #countdown {
+    font-size: 3em;
+  }
+  .label {
+    margin-top: 0.5em;
+    font-size: 2em;
+  }
+  #student-name {
+    font-size: 1.5em;
+  }
+  #visit-button {
+    background-color: #E0FFE0;
+    color: black;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+    transition: background-color 0.5s;
+  }
+  #visit-button:hover {
+    background-color: #ADD8E6;
+  }
+</style>
+<script>
+// تعيين تاريخ عيد الأضحى
+var countDownDate = new Date("Jun 16, 2024 00:00:00").getTime();
+
+// تحديث العد التنازلي كل ثانية
+var x = setInterval(function() {
+
+  // الحصول على تاريخ ووقت اليوم
+  var now = new Date().getTime();
+
+  // العثور على الفترة الزمنية بين الآن وتاريخ العد التنازلي
+  var distance = countDownDate - now;
+
+  // حساب الأيام والساعات والدقائق والثواني
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // عرض النتيجة في العنصر ذو الid="countdown"
+  document.getElementById("countdown").innerHTML = days + " أيام " + "<br>" + hours + " ساعات " + "<br>" + minutes + " دقائق " + "<br>" + seconds + " ثواني ";
+
+  // إذا انتهى العد التنازلي، عرض الصورة
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("countdown").style.display = "none";
+    document.getElementById("eid-image").style.display = "block";
+  }
+}, 1000);
+</script>
+</head>
+<body>
+
+<h1>العد التنازلي لعيد الأضحى</h1>
+<div id="countdown"></div>
+<p id="student-name">عمل الطالبة: هبة كتانة</p>
+<!-- استبدل 'رابط_صورتك_هنا' بالرابط الفعلي لصورتك -->
+<img id="eid-image" src="https://photos.app.goo.gl/x6Jo1r3mr4pGvXFY9" alt="عيد أضحى مبارك" style="display:none;">
+<a id="visit-button" href="https://1hiba7.github.io/Hiba-Kittaneh/">زيارة موقعي الالكتروني</a>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب عمرك</title>
+    <style>
+        body {
+            background-color: #f0f5ff; /* لون خلفية الصفحة */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>حساب عمرك</h1>
+    <label for="birthdate">أدخل تاريخ ميلادك:</label>
+    <input type="date" id="birthdate">
+    <button onclick="calculateCountdown()">احسب</button>
+    <p id="countdown"></p>
+
+    <script>
+        function calculateCountdown() {
+            const birthdateInput = document.getElementById('birthdate');
+            const birthdate = new Date(birthdateInput.value);
+
+            function updateCountdown() {
+                const now = new Date();
+                const timeLeft = birthdate - now;
+
+                const years = Math.floor(timeLeft / (1000 * 60 * 60 * 24 * 365));
+                const days = Math.floor((timeLeft % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                document.getElementById('countdown').textContent = `السنوات: ${years}
+الأيام: ${days}
+الساعات: ${hours}
+الدقائق: ${minutes}
+الثواني: ${seconds}`;
+            }
+
+            updateCountdown(); // حدث العد التنازلي عند البدء
+            setInterval(updateCountdown, 1000); // حدث العد التنازلي كل ثانية
+        }
+    </script>
+</body>
+</html>
