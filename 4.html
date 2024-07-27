@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #87CEEB, #98FB98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .countdown {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            font-size: 4em; /* Increased font size */
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown">
+        <div id="days"></div>
+        <div id="hours"></div>
+        <div id="minutes"></div>
+        <div id="seconds"></div>
+        <p>أتمنى لك النجاح</p>
+    </div>
+    <script>
+        function updateCountdown() {
+            const targetTime = new Date("2024-07-29T09:00:00Z");
+            const currentTime = new Date();
+            const timeDifference = targetTime - currentTime;
+
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = `${days} أيام`;
+            document.getElementById("hours").textContent = `${hours} ساعات`;
+            document.getElementById("minutes").textContent = `${minutes} دقائق`;
+            document.getElementById("seconds").textContent = `${seconds} ثواني`;
+        }
+
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
