@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العد التنازلي لبداية المدارس الفلسطينية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #fffde7, #e3f2fd);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .countdown {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>العد التنازلي لبداية المدارس الفلسطينية</h1>
+    <div id="days" class="countdown">الأيام: 0</div>
+    <div id="hours" class="countdown">الساعات: 0</div>
+    <div id="minutes" class="countdown">الدقائق: 0</div>
+    <div id="seconds" class="countdown">الثواني: 0</div>
+
+    <script>
+        // تعيين تاريخ بداية المدارس: 9 سبتمبر 2024، الساعة 6:00 صباحًا
+        const schoolStartDate = new Date("Sep 9, 2024 06:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = schoolStartDate - now;
+
+            // حساب الوقت المتبقي
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // تحديث النصوص
+            document.getElementById("days").innerText = "الأيام: " + days;
+            document.getElementById("hours").innerText = "الساعات: " + hours;
+            document.getElementById("minutes").innerText = "الدقائق: " + minutes;
+            document.getElementById("seconds").innerText = "الثواني: " + seconds;
+
+            // في حال انتهاء العد التنازلي
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("days").innerText = "المدارس بدأت!";
+                document.getElementById("hours").innerText = "";
+                document.getElementById("minutes").innerText = "";
+                document.getElementById("seconds").innerText = "";
+            }
+        }
+
+        // تحديث العد التنازلي كل ثانية
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
+
