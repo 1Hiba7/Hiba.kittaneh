@@ -3,56 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حساب عمرك</title>
+    <title>حساب العمر</title>
     <style>
         body {
-            background-color: #f0f5ff; /* لون خلفية الصفحة */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        h1 {
+            font-family: Arial, sans-serif;
             text-align: center;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
         }
         p {
-            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>حساب عمرك</h1>
-    <label for="birthdate">أدخل تاريخ ميلادك:</label>
-    <input type="date" id="birthdate">
-    <button onclick="calculateCountdown()">احسب</button>
-    <p id="countdown"></p>
 
-    <script>
-        function calculateCountdown() {
-            const birthdateInput = document.getElementById('birthdate');
-            const birthdate = new Date(birthdateInput.value);
+<div class="container">
+    <h2>حساب العمر</h2>
+    <label for="birthdate">أدخل تاريخ ميلادك:</label><br>
+    <input type="date" id="birthdate"><br>
+    <button onclick="startCalculatingAge()">احسب العمر</button>
 
-            function updateCountdown() {
-                const now = new Date();
-                const timeLeft = birthdate - now;
+    <p id="result"></p>
+</div>
 
-                const years = Math.floor(timeLeft / (1000 * 60 * 60 * 24 * 365));
-                const days = Math.floor((timeLeft % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+<script>
+    let interval;
 
-                document.getElementById('countdown').textContent = `السنوات: ${years}
-الأيام: ${days}
-الساعات: ${hours}
-الدقائق: ${minutes}
-الثواني: ${seconds}`;
-            }
-
-            updateCountdown(); // حدث العد التنازلي عند البدء
-            setInterval(updateCountdown, 1000); // حدث العد التنازلي كل ثانية
+    function startCalculatingAge() {
+        let birthdate = document.getElementById('birthdate').value;
+        if (birthdate === "") {
+            document.getElementById('result').innerHTML = "الرجاء إدخال تاريخ الميلاد";
+            return;
         }
-    </script>
+
+        clearInterval(interval); // إيقاف أي عداد سابق
+        calculateAge(); // حساب العمر مباشرةً
+        interval = setInterval(calculateAge, 1000); // تحديث العمر كل ثانية
+    }
+
+    function calculateAge() {
+        let birthdate = new Date(document.getElementById('birthdate').value);
+        let now = new Date();
+        
+        // حساب الفرق بالثواني
+        let diffInSeconds = Math.floor((now - birthdate) / 1000);
+        
+        let years = Math.floor(diffInSeconds / (365.25 * 24 * 60 * 60));
+        diffInSeconds -= years * 365.25 * 24 * 60 * 60;
+        
+        let months = Math.floor(diffInSeconds / (30.44 * 24 * 60 * 60));
+        diffInSeconds -= months * 30.44 * 24 * 60 * 60;
+        
+        let days = Math.floor(diffInSeconds / (24 * 60 * 60));
+        diffInSeconds -= days * 24 * 60 * 60;
+        
+        let hours = Math.floor(diffInSeconds / (60 * 60));
+        diffInSeconds -= hours * 60 * 60;
+        
+        let minutes = Math.floor(diffInSeconds / 60);
+        let seconds = diffInSeconds % 60;
+
+        document.getElementById('result').innerHTML = 
+            "عمرك هو: " + years + " سنة، " + 
+            months + " شهر، " + 
+            days + " يوم، " + 
+            hours + " ساعة، " + 
+            minutes + " دقيقة، " + 
+            seconds + " ثانية";
+    }
+</script>
+
 </body>
 </html>
