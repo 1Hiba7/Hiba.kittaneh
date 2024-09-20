@@ -1,77 +1,147 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-<meta charset="UTF-8">
-<title>عد تنازلي لعيد الأضحى</title>
-<style>
-  body {
-    text-align: center;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to left, #E0E0FF, #FFE0E0);
-    color: black;
-  }
-  #countdown {
-    font-size: 3em;
-  }
-  .label {
-    margin-top: 0.5em;
-    font-size: 2em;
-  }
-  #student-name {
-    font-size: 1.5em;
-  }
-  #visit-button {
-    background-color: #E0FFE0;
-    color: black;
-    padding: 10px 20px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 20px;
-    transition: background-color 0.5s;
-  }
-  #visit-button:hover {
-    background-color: #ADD8E6;
-  }
-</style>
-<script>
-// تعيين تاريخ عيد الأضحى
-var countDownDate = new Date("Jun 06, 2025 00:00:00").getTime();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العد التنازلي للمناسبات الدينية</title>
+    
+    <!-- الرمز المفضل للموقع -->
+    <link rel="icon" href="1.png" type="image/png">
 
-// تحديث العد التنازلي كل ثانية
-var x = setInterval(function() {
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
-  // الحصول على تاريخ ووقت اليوم
-  var now = new Date().getTime();
+        .countdown-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
 
-  // العثور على الفترة الزمنية بين الآن وتاريخ العد التنازلي
-  var distance = countDownDate - now;
+        .countdown {
+            background-color: #fff;
+            border: 2px solid #ddd;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-  // حساب الأيام والساعات والدقائق والثواني
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        h2 {
+            margin-bottom: 15px;
+        }
 
-  // عرض النتيجة في العنصر ذو الid="countdown"
-  document.getElementById("countdown").innerHTML = days + " أيام " + "<br>" + hours + " ساعات " + "<br>" + minutes + " دقائق " + "<br>" + seconds + " ثواني ";
+        #ramadan, #fitr, #adha {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1.5; /* لجعل العناصر تظهر بسطر منفصل */
+        }
 
-  // إذا انتهى العد التنازلي، عرض الصورة
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("countdown").style.display = "none";
-    document.getElementById("eid-image").style.display = "block";
-  }
-}, 1000);
-</script>
+        /* زر العودة إلى الصفحة الرئيسية */
+        .return-button {
+            background-color: #add8e6;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .return-button:hover {
+            background-color: #90ee90; /* اللون يصبح أخضر فاتح عند ملامسة الفأرة */
+        }
+
+        /* تصميم الزر للشاشات الكبيرة */
+        .return-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        /* موقع الزر في الشاشات الصغيرة (الهاتف) */
+        @media (max-width: 600px) {
+            .return-container {
+                position: relative;
+                top: 0;
+                margin-bottom: 20px; /* يجعل الزر يظهر فوق العد التنازلي لرمضان */
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- زر العودة إلى الصفحة الرئيسية في الأعلى -->
+    <div class="return-container">
+        <a href="https://1hiba7.github.io/Hiba-Kittaneh/">
+            <button class="return-button">العودة إلى الصفحة الرئيسية</button>
+        </a>
+    </div>
 
-<h1>العد التنازلي لعيد الأضحى</h1>
-<div id="countdown"></div>
-<p id="student-name">عمل الطالبة: هبة كتانة</p>
-<!-- استبدل 'رابط_صورتك_هنا' بالرابط الفعلي لصورتك -->
-<img id="eid-image" src="https://th.bing.com/th/id/OIP.EUCER-cKALHkidxr5qEI1gAAAA?rs=1&pid=ImgDetMain" alt="عيد أضحى مبارك" style="display:none;">
-<a id="visit-button" href="https://1hiba7.github.io/Hiba-Kittaneh/">العودة للصفحة الرئيسية</a>
+    <div class="countdown-container">
+        <!-- العد التنازلي لرمضان -->
+        <div class="countdown" id="ramadan-countdown">
+            <h2>العد التنازلي لرمضان</h2>
+            <div id="ramadan"></div>
+        </div>
 
+        <!-- العد التنازلي لعيد الفطر -->
+        <div class="countdown" id="fitr-countdown">
+            <h2>العد التنازلي لعيد الفطر</h2>
+            <div id="fitr"></div>
+        </div>
+
+        <!-- العد التنازلي لعيد الأضحى -->
+        <div class="countdown" id="adha-countdown">
+            <h2>العد التنازلي لعيد الأضحى</h2>
+            <div id="adha"></div>
+        </div>
+    </div>
+
+    <script>
+        // تواريخ المناسبات لسنة 2025
+        const ramadanDate = new Date('February 28, 2025 00:00:00').getTime(); // بداية رمضان 2025
+        const fitrDate = new Date('March 30, 2025 00:00:00').getTime(); // عيد الفطر 2025
+        const adhaDate = new Date('June 6, 2025 00:00:00').getTime(); // عيد الأضحى 2025
+
+        // الوظيفة العامة للعد التنازلي
+        function countdown(targetDate, elementId, finishedMessage, nextYearDate) {
+            const now = new Date().getTime();
+            const timeLeft = targetDate - now;
+
+            if (timeLeft < 0) {
+                document.getElementById(elementId).innerHTML = finishedMessage;
+
+                // تحديث العد التنازلي للسنة القادمة بعد فترة زمنية طويلة (24 ساعة)
+                if (nextYearDate) {
+                    setTimeout(() => {
+                        countdown(nextYearDate, elementId, finishedMessage, nextYearDate + 365 * 24 * 60 * 60 * 1000);
+                    }, 24 * 60 * 60 * 1000); // بعد 24 ساعة
+                }
+
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24)); // حساب الأيام
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById(elementId).innerHTML = 
+                `${days} يوم<br>${hours} ساعة<br>${minutes} دقيقة<br>${seconds} ثانية`;
+
+            setTimeout(() => countdown(targetDate, elementId, finishedMessage, nextYearDate), 1000);
+        }
+
+        // تفعيل العد التنازلي لكل مناسبة
+        countdown(ramadanDate, 'ramadan', 'رمضان كريم!', ramadanDate + 365 * 24 * 60 * 60 * 1000);
+        countdown(fitrDate, 'fitr', 'عيد فطر سعيد!', fitrDate + 365 * 24 * 60 * 60 * 1000);
+        countdown(adhaDate, 'adha', 'عيد أضحى مبارك!', adhaDate + 365 * 24 * 60 * 60 * 1000);
+    </script>
 </body>
 </html>
