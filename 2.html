@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حساب العمر</title>
-
-    <link rel="icon" href="2.png" type="image/png">
-    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,16 +27,20 @@
         button {
             padding: 10px;
             width: 100%;
-            background-color: #4CAF50;
+            background-color: #add8e6; /* الأزرق الفاتح */
             color: white;
             border: none;
+            border-radius: 15px; /* لجعل الزر دون حواف مدببة */
             cursor: pointer;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #90ee90; /* الأخضر الفاتح */
         }
         p {
             margin-top: 20px;
+        }
+        #result {
+            text-align: left;
         }
     </style>
 </head>
@@ -48,10 +49,14 @@
 <div class="container">
     <h2>حساب العمر</h2>
     <label for="birthdate">أدخل تاريخ ميلادك:</label><br>
-    <input type="date" id="birthdate"><br>
+    <input type="date" id="birthdate" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD"><br>
     <button onclick="startCalculatingAge()">احسب العمر</button>
 
     <p id="result"></p>
+
+    <button onclick="window.location.href='https://1hiba7.github.io/Hiba-Kittaneh/'">
+        العودة إلى الصفحة الرئيسية
+    </button>
 </div>
 
 <script>
@@ -79,9 +84,9 @@
         let years = Math.floor(diffInSeconds / (365.25 * 24 * 60 * 60));
         diffInSeconds -= years * 365.25 * 24 * 60 * 60;
         
-        let months = Math.floor(diffInSeconds / (30.44 * 24 * 60 * 60));
-        diffInSeconds -= months * 30.44 * 24 * 60 * 60;
-        
+        let weeks = Math.floor(diffInSeconds / (7 * 24 * 60 * 60));
+        diffInSeconds -= weeks * 7 * 24 * 60 * 60;
+
         let days = Math.floor(diffInSeconds / (24 * 60 * 60));
         diffInSeconds -= days * 24 * 60 * 60;
         
@@ -92,11 +97,11 @@
         let seconds = diffInSeconds % 60;
 
         document.getElementById('result').innerHTML = 
-            "عمرك هو: " + years + " سنة، " + 
-            months + " شهر، " + 
-            days + " يوم، " + 
-            hours + " ساعة، " + 
-            minutes + " دقيقة، " + 
+            "عمرك هو:<br>" + years + " سنة<br>" + 
+            weeks + " أسبوع<br>" + 
+            days + " يوم<br>" + 
+            hours + " ساعة<br>" + 
+            minutes + " دقيقة<br>" + 
             seconds + " ثانية";
     }
 </script>
