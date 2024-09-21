@@ -32,6 +32,10 @@
             margin: 20px 0;
         }
 
+        .buttons {
+            margin-bottom: 20px; /* إضافة مسافة أسفل الأزرار */
+        }
+
         .buttons button {
             font-size: 24px;
             padding: 10px 20px;
@@ -46,16 +50,42 @@
         .buttons button:hover {
             background-color: #0056b3;
         }
+
+        .home-button {
+            margin-top: 20px;
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #add8e6; /* أزرق فاتح */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+        }
+
+        .home-button:hover {
+            background-color: #90ee90; /* أخضر فاتح */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>عداد تسبيح</h1>
+        <label for="usedBefore">هل استخدمت الموقع من قبل؟</label>
+        <input type="checkbox" id="usedBefore" onchange="togglePreviousCount()">
+        <div id="previousCountDiv" style="display: none;">
+            <label for="previousCount">أدخل عدد المرات السابقة:</label>
+            <!-- السماح بإدخال أرقام فقط ومنع القيم السالبة -->
+            <input type="number" id="previousCount" value="0" min="0" oninput="validateInput(this)" onchange="setPreviousCount()">
+        </div>
         <div id="counter">0</div>
         <div class="buttons">
             <button onclick="decrement()">-</button>
             <button onclick="increment()">+</button>
         </div>
+
+        <!-- زر العودة إلى الصفحة الرئيسية -->
+        <a href="https://1hiba7.github.io/Hiba-Kittaneh/" class="home-button">العودة إلى الصفحة الرئيسية</a>
     </div>
     <script>
         let count = 0;
@@ -74,6 +104,30 @@
                 count--;
             }
             updateCounter();
+        }
+
+        function togglePreviousCount() {
+            const previousCountDiv = document.getElementById('previousCountDiv');
+            if (document.getElementById('usedBefore').checked) {
+                previousCountDiv.style.display = 'block';
+            } else {
+                previousCountDiv.style.display = 'none';
+                count = 0;
+                updateCounter();
+            }
+        }
+
+        function setPreviousCount() {
+            const previousCount = parseInt(document.getElementById('previousCount').value);
+            count = isNaN(previousCount) ? 0 : previousCount;
+            updateCounter();
+        }
+
+        // منع المستخدم من إدخال أرقام سالبة
+        function validateInput(input) {
+            if (input.value < 0) {
+                input.value = 0;
+            }
         }
     </script>
 </body>
