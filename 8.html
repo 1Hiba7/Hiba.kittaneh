@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عجلة أسماء عشوائية</title>
+    
+    <!-- الرمز المفضل -->
+    <link rel="icon" href="8.png" type="image/png">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+
+        #wheelCanvas {
+            border-radius: 50%;
+            border: 5px solid #ccc;
+            margin: 20px auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #indicator {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 20px solid black;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn {
+            background-color: lightblue;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background-color: lightgreen;
+        }
+
+        input[type="text"] {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        #notification {
+            position: relative;
+            margin-top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        #centerCircle {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background-color: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #helpText {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #helpDetails {
+            display: none;
+            padding: 20px;
+            background-color: #f8f8f8;
+            border-top: 2px solid #ccc;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        #helpDetails p {
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            #buttons {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            input[type="text"], .btn {
+                width: 80%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>عجلة أسماء عشوائية</h1>
+
+    <div style="position: relative;">
+        <canvas id="wheelCanvas" width="300" height="300"></canvas>
+        <div id="centerCircle"></div>
+        <div id="indicator"></div>
+    </div>
+
+    <div id="buttons">
+        <input type="text" id="nameInput" placeholder="أدخل اسمًا أو قيمة">
+        <button class="btn" onclick="addName()">إضافة اسم</button>
+        <button class="btn" onclick="removeName()">إزالة اسم</button>
+        <button class="btn" onclick="editName()">تعديل اسم</button>
+        <button class="btn" onclick="spinWheel()">دور العجلة</button>
+    </div>
+
+    <button class="btn" onclick="location.href='https://1hiba7.github.io/Hiba-Kittaneh/'">العودة إلى الصفحة الرئيسية</button>
+
+    <div id="notification"></div>
+
+    <div id="helpText" onclick="toggleHelp()">هل تحتاج لمساعدة؟</div>
+
+    <div id="helpDetails">
+        <h2>شرح فكرة الموقع</h2>
+        <p>هذا الموقع يوفر عجلة عشوائية يمكن استخدامها لاختيار أسماء بشكل عشوائي. يمكن إضافة أسماء للعجلة، تعديلها، أو إزالتها. عند النقر على زر "دور العجلة"، ستدور العجلة لمدة 5 ثوانٍ ثم تتوقف على اسم عشوائي يمثل الفائز.</p>
+
+        <h3>شرح الأزرار:</h3>
+        <p><strong>إضافة اسم:</strong> استخدم هذا الزر لإضافة اسم جديد إلى العجلة. يجب إدخال الاسم في الحقل النصي الموجود أعلى الأزرار.</p>
+        <p><strong>إزالة اسم:</strong> يمكنك إزالة اسم موجود عن طريق إدخال الاسم المراد حذفه في الحقل النصي ثم النقر على زر "إزالة اسم".</p>
+        <p><strong>تعديل اسم:</strong> هذا الزر يسمح لك بتعديل اسم موجود. يجب إدخال الاسم الجديد في الحقل النصي، وسيتم سؤالك عن الاسم الذي تريد تعديله.</p>
+        <p><strong>دور العجلة:</strong> عند النقر على هذا الزر، ستبدأ العجلة بالدوران لمدة 5 ثوانٍ وستتوقف عند اسم عشوائي.</p>
+    </div>
+
+    <script>
+        let names = [];
+        let canvas = document.getElementById('wheelCanvas');
+        let ctx = canvas.getContext('2d');
+        let rotation = 0;
+        let isSpinning = false;
+
+        const colorPattern = ['#3369e8', '#d50f25', '#eeb211', '#009925'];
+
+        function addName() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (name === '') {
+                showNotification("يرجى إدخال اسم صالح");
+                return;
+            }
+            if (!names.includes(name)) {
+                names.push(name);
+                document.getElementById('nameInput').value = '';
+                showNotification("تمت إضافة الاسم بنجاح");
+                renderWheel();
+            } else {
+                showNotification("الاسم موجود بالفعل");
+            }
+        }
+
+        function removeName() {
+            const name = document.getElementById('nameInput').value.trim();
+            const index = names.indexOf(name);
+            if (index > -1) {
+                names.splice(index, 1);
+                showNotification("تمت إزالة الاسم بنجاح");
+                renderWheel();
+            } else {
+                showNotification("الاسم غير موجود");
+            }
+        }
+
+        function editName() {
+            const oldName = prompt("أدخل الاسم الحالي:").trim();
+            const newName = document.getElementById('nameInput').value.trim();
+            const index = names.indexOf(oldName);
+            if (index > -1 && newName) {
+                names[index] = newName;
+                showNotification("تم تعديل الاسم بنجاح");
+                renderWheel();
+            } else {
+                showNotification("الاسم غير موجود أو الاسم الجديد فارغ");
+            }
+        }
+
+        function renderWheel() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (names.length === 0) return;
+
+            const anglePerSegment = 2 * Math.PI / names.length;
+
+            names.forEach((name, index) => {
+                const startAngle = index * anglePerSegment;
+                const endAngle = startAngle + anglePerSegment;
+
+                const color = colorPattern[index % colorPattern.length];
+
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, canvas.height / 2);
+                ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, endAngle);
+                ctx.closePath();
+
+                ctx.fillStyle = color;
+                ctx.fill();
+
+                ctx.fillStyle = (color === '#3369e8' || color === '#d50f25') ? 'white' : 'black';
+                ctx.font = (name.length > 12) ? '12px Arial' : 'bold 16px Arial';
+
+                const displayName = name.length > 12 ? name.substring(0, 12) + '...' : name;
+
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate((startAngle + endAngle) / 2);
+                ctx.textAlign = "right";
+                ctx.fillText(displayName, canvas.width / 2 - 10, 10);
+                ctx.restore();
+            });
+        }
+
+        function spinWheel() {
+            if (isSpinning || names.length === 0) {
+                showNotification("العجلة تدور بالفعل أو لم يتم إضافة أسماء");
+                return;
+            }
+
+            document.getElementById('helpDetails').style.display = 'none';
+
+            isSpinning = true;
+            let spinTime = 5000;
+            const randomIndex = Math.floor(Math.random() * names.length);
+            const anglePerSegment = 360 / names.length;
+            const extraRotation = 360 * 3;
+            const targetRotation = randomIndex * anglePerSegment;
+            const finalRotation = rotation + extraRotation + targetRotation - (anglePerSegment / 2);
+
+            canvas.style.transition = 'transform 5s ease-out';
+            canvas.style.transform = `rotate(${finalRotation}deg)`;
+
+            setTimeout(() => {
+                rotation = finalRotation % 360;
+                isSpinning = false;
+                showNotification(`الفائز هو: ${names[randomIndex]}`);
+            }, spinTime);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        function toggleHelp() {
+            const helpDetails = document.getElementById('helpDetails');
+            if (helpDetails.style.display === 'none') {
+                helpDetails.style.display = 'block';
+            } else {
+                helpDetails.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
