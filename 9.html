@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انتقاء الألوان من الصورة</title>
+    
+    <!-- رمز الموقع المفضل -->
+    <link rel="icon" href="9.png" type="image/png">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            background-color: rgb(255, 228, 225); /* أبيض مائل إلى الوردي */
+        }
+
+        #uploadContainer {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            cursor: pointer;
+            position: relative; /* لتسهيل وضع النص */
+        }
+        
+        #uploadContainer:hover {
+            border-color: #aaa;
+        }
+
+        #uploadContainer span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #777;
+        }
+
+        #uploadedImage {
+            display: none;
+            margin: 20px auto;
+            max-width: 80%;
+            height: auto;
+            cursor: crosshair; /* شكل الفأرة عند ملامسة الصورة */
+        }
+
+        #colorBox {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+
+        #colorDisplay {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+            border: 1px solid #000;
+        }
+
+        #palette {
+            margin-top: 20px;
+        }
+
+        .color-swatch {
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            border: 1px solid #000;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .copy-btn {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 5px 10px;
+            background-color: lightblue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background-color: lightgreen;
+        }
+
+        #returnHomeBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: lightblue;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative; /* تعيين الموضع النسبي */
+            display: block; /* لجعل الزر يأخذ مساحة كاملة */
+            margin-left: auto; /* محاذاة إلى اليمين */
+            margin-right: auto; /* محاذاة إلى اليسار */
+        }
+
+        #returnHomeBtn:hover {
+            background-color: lightgreen;
+        }
+
+        /* تصميم متجاوب */
+        @media screen and (max-width: 768px) {
+            body {
+                margin: 10px;
+            }
+
+            #uploadContainer {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>اختر صورة لانتقاء الألوان</h1>
+
+    <div id="uploadContainer">
+        <span>تحميل الصور</span>
+        <input type="file" id="imageLoader" accept="image/*" multiple style="opacity: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;">
+    </div>
+
+    <br>
+
+    <img id="uploadedImage" alt="الصورة المحملة">
+    <canvas id="imageCanvas" style="display: none;"></canvas>
+
+    <div id="colorBox">
+        <div id="colorDisplay"></div>
+        <p id="colorCode">اختر نقطة لاختيار اللون</p>
+        <button class="copy-btn" id="copySelectedColor" style="display:none;">نسخ اللون</button>
+    </div>
+
+    <div id="palette">
+        <h2>لوحة الألوان المستخرجة تلقائيًا</h2>
+    </div>
+
+    <button id="returnHomeBtn" onclick="window.location.href='https://1hiba7.github.io/Hiba-Kittaneh/'">العودة إلى الصفحة الرئيسية</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <script>
+        const imageLoader = document.getElementById('imageLoader');
+        const uploadedImage = document.getElementById('uploadedImage');
+        const imageCanvas = document.getElementById('imageCanvas');
+        const colorDisplay = document.getElementById('colorDisplay');
+        const colorCode = document.getElementById('colorCode');
+        const paletteDiv = document.getElementById('palette');
+        const copySelectedColor = document.getElementById('copySelectedColor');
+        const colorThief = new ColorThief();
+        
+        let ctx = imageCanvas.getContext('2d');
+
+        // إخفاء العناصر حتى يتم تحميل الصورة
+        imageLoader.addEventListener('change', function (event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                showElements();
+                displayImage(files[0]);
+            }
+        });
+
+        function showElements() {
+            uploadedImage.style.display = 'block';
+            document.getElementById('colorBox').style.display = 'block';
+            document.getElementById('palette').style.display = 'block';
+        }
+
+        // عرض الصورة المحملة
+        function displayImage(file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                uploadedImage.src = event.target.result;
+                uploadedImage.onload = function () {
+                    // إخفاء أي لوحة ألوان سابقة
+                    paletteDiv.innerHTML = '';
+                    imageCanvas.width = uploadedImage.width;
+                    imageCanvas.height = uploadedImage.height;
+                    ctx.drawImage(uploadedImage, 0, 0);
+
+                    // استخراج الألوان التلقائية من الصورة
+                    const palette = colorThief.getPalette(uploadedImage, 5);  // الحصول على 5 ألوان
+                    palette.forEach(color => {
+                        const colorDiv = document.createElement('div');
+                        colorDiv.classList.add('color-swatch');
+                        colorDiv.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+                        colorDiv.addEventListener('click', function () {
+                            showColorInfo(color);
+                        });
+
+                        const copyBtn = document.createElement('button');
+                        copyBtn.classList.add('copy-btn');
+                        copyBtn.textContent = 'نسخ اللون';
+                        copyBtn.addEventListener('click', function (e) {
+                            e.stopPropagation(); // منع الحدث من الانتقال إلى اللون
+                            copyColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+                        });
+
+                        paletteDiv.appendChild(colorDiv);
+                        paletteDiv.appendChild(copyBtn);
+                    });
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // اختيار لون من الصورة
+        uploadedImage.addEventListener('click', function (event) {
+            const x = event.offsetX;
+            const y = event.offsetY;
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const rgb = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+            colorDisplay.style.backgroundColor = rgb;
+            const hexColor = rgbToHex(pixel[0], pixel[1], pixel[2]);
+            colorCode.textContent = `RGB: ${rgb} | HEX: ${hexColor}`;
+            copySelectedColor.style.display = 'block';
+
+            // زر النسخ
+            copySelectedColor.onclick = function () {
+                copyColor(rgb);
+            };
+        });
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+        }
+
+        // عرض معلومات اللون
+        function showColorInfo(color) {
+            const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+            const hexColor = rgbToHex(color[0], color[1], color[2]);
+            colorDisplay.style.backgroundColor = rgb;
+            colorCode.textContent = `RGB: ${rgb} | HEX: ${hexColor}`;
+            copySelectedColor.style.display = 'block';
+        }
+
+        // نسخ اللون
+        function copyColor(color) {
+            const tempInput = document.createElement('input');
+            document.body.appendChild(tempInput);
+            tempInput.value = color;
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert(`تم نسخ اللون: ${color}`);
+        }
+    </script>
+</body>
+</html>
