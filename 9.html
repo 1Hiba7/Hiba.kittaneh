@@ -48,7 +48,7 @@
 
         #colorBox {
             margin-top: 20px;
-            display: inline-block;
+            display: none; /* إخفاء حتى يتم تحميل الصورة */
             padding: 10px;
             background-color: #f0f0f0;
             border: 1px solid #ccc;
@@ -63,6 +63,7 @@
 
         #palette {
             margin-top: 20px;
+            display: none; /* إخفاء حتى يتم تحميل الصورة */
         }
 
         .color-swatch {
@@ -124,7 +125,7 @@
     <h1>اختر صورة لانتقاء الألوان</h1>
 
     <div id="uploadContainer">
-        <span>تحميل الصور</span>
+        <span>تحميل صورة</span>
         <input type="file" id="imageLoader" accept="image/*" multiple style="opacity: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;">
     </div>
 
@@ -133,14 +134,14 @@
     <img id="uploadedImage" alt="الصورة المحملة">
     <canvas id="imageCanvas" style="display: none;"></canvas>
 
-    <div id="colorBox">
+    <div id="colorBox" style="display:none;">
         <div id="colorDisplay"></div>
         <p id="colorCode">اختر نقطة لاختيار اللون</p>
-        <button class="copy-btn" id="copySelectedColor" style="display:none;">نسخ اللون</button>
     </div>
 
-    <div id="palette">
+    <div id="palette" style="display:none;">
         <h2>لوحة الألوان المستخرجة تلقائيًا</h2>
+        <div id="paletteColors"></div>
     </div>
 
     <button id="returnHomeBtn" onclick="window.location.href='https://1hiba7.github.io/Hiba-Kittaneh/'">العودة إلى الصفحة الرئيسية</button>
@@ -152,8 +153,9 @@
         const imageCanvas = document.getElementById('imageCanvas');
         const colorDisplay = document.getElementById('colorDisplay');
         const colorCode = document.getElementById('colorCode');
-        const paletteDiv = document.getElementById('palette');
-        const copySelectedColor = document.getElementById('copySelectedColor');
+        const paletteDiv = document.getElementById('paletteColors');
+        const paletteContainer = document.getElementById('palette');
+        const colorBox = document.getElementById('colorBox');
         const colorThief = new ColorThief();
         
         let ctx = imageCanvas.getContext('2d');
@@ -169,8 +171,8 @@
 
         function showElements() {
             uploadedImage.style.display = 'block';
-            document.getElementById('colorBox').style.display = 'block';
-            document.getElementById('palette').style.display = 'block';
+            colorBox.style.display = 'block'; // إظهار لون العرض
+            paletteContainer.style.display = 'block'; // إظهار لوحة الألوان
         }
 
         // عرض الصورة المحملة
@@ -220,12 +222,6 @@
             colorDisplay.style.backgroundColor = rgb;
             const hexColor = rgbToHex(pixel[0], pixel[1], pixel[2]);
             colorCode.textContent = `RGB: ${rgb} | HEX: ${hexColor}`;
-            copySelectedColor.style.display = 'block';
-
-            // زر النسخ
-            copySelectedColor.onclick = function () {
-                copyColor(rgb);
-            };
         });
 
         function rgbToHex(r, g, b) {
@@ -238,7 +234,6 @@
             const hexColor = rgbToHex(color[0], color[1], color[2]);
             colorDisplay.style.backgroundColor = rgb;
             colorCode.textContent = `RGB: ${rgb} | HEX: ${hexColor}`;
-            copySelectedColor.style.display = 'block';
         }
 
         // نسخ اللون
