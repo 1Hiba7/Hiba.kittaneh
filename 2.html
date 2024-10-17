@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حساب العمر</title>
+    <title>حساب العمر وتاريخ يوم الميلاد القادم</title>
 
     <link rel="icon" type="image/png" href="2.png">
 
@@ -27,9 +27,13 @@
             margin: 10px 0;
             width: 100%;
         }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
         button {
             padding: 10px;
-            width: 100%;
+            width: 48%; /* ليجعل الأزرار بجانب بعضها */
             background-color: #add8e6; /* الأزرق الفاتح */
             color: white;
             border: none;
@@ -50,10 +54,15 @@
 <body>
 
 <div class="container">
-    <h2>حساب العمر</h2>
+    <h2>حساب العمر وتاريخ يوم الميلاد القادم</h2>
     <label for="birthdate">أدخل تاريخ ميلادك:</label><br>
     <input type="date" id="birthdate" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD"><br>
-    <button onclick="startCalculatingAge()">احسب العمر</button>
+    
+    <!-- قسم الأزرار لجعلها بجانب بعضها -->
+    <div class="buttons">
+        <button onclick="startCalculatingAge()">احسب العمر</button>
+        <button onclick="startBirthdayCountdown()">احسب تاريخ يوم الميلاد القادم</button>
+    </div>
 
     <p id="result"></p>
 
@@ -64,8 +73,10 @@
 
 <script>
     let interval;
+    let birthdayInterval;
 
     function startCalculatingAge() {
+        clearInterval(birthdayInterval); // إيقاف عداد يوم الميلاد
         let birthdate = document.getElementById('birthdate').value;
         if (birthdate === "") {
             document.getElementById('result').innerHTML = "الرجاء إدخال تاريخ الميلاد";
@@ -81,7 +92,6 @@
         let birthdate = new Date(document.getElementById('birthdate').value);
         let now = new Date();
         
-        // حساب الفرق بالثواني
         let diffInSeconds = Math.floor((now - birthdate) / 1000);
         
         let years = Math.floor(diffInSeconds / (365.25 * 24 * 60 * 60));
@@ -106,6 +116,54 @@
             hours + " ساعة<br>" + 
             minutes + " دقيقة<br>" + 
             seconds + " ثانية";
+    }
+
+    function startBirthdayCountdown() {
+        clearInterval(interval); // إيقاف عداد العمر
+        clearInterval(birthdayInterval); // إيقاف أي عداد سابق
+        calculateNextBirthday(); // حساب العد التنازلي مباشرة
+        birthdayInterval = setInterval(calculateNextBirthday, 1000); // تحديث العد التنازلي كل ثانية
+    }
+
+    function calculateNextBirthday() {
+        let birthdate = new Date(document.getElementById('birthdate').value);
+        if (!birthdate) {
+            document.getElementById('result').innerHTML = "الرجاء إدخال تاريخ الميلاد";
+            return;
+        }
+
+        let now = new Date();
+        let nextBirthday = new Date(now.getFullYear(), birthdate.getMonth(), birthdate.getDate());
+        if (nextBirthday < now) {
+            nextBirthday.setFullYear(now.getFullYear() + 1);
+        }
+
+        let diffInTime = nextBirthday - now;
+        let diffInSeconds = Math.floor(diffInTime / 1000);
+
+        let days = Math.floor(diffInSeconds / (24 * 60 * 60));
+        diffInSeconds -= days * 24 * 60 * 60;
+
+        let hours = Math.floor(diffInSeconds / (60 * 60));
+        diffInSeconds -= hours * 60 * 60;
+
+        let minutes = Math.floor(diffInSeconds / 60);
+        let seconds = diffInSeconds % 60;
+
+        let weeks = Math.floor(days / 7);
+        days = days % 7;
+
+        let daysOfWeek = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+        let nextBirthdayDay = daysOfWeek[nextBirthday.getDay()];
+
+        document.getElementById('result').innerHTML = 
+            "العد التنازلي حتى يوم ميلادك القادم هو:<br>" + 
+            weeks + " أسبوع<br>" + 
+            days + " يوم<br>" + 
+            hours + " ساعة<br>" + 
+            minutes + " دقيقة<br>" + 
+            seconds + " ثانية<br>" +
+            "يوم ميلادك القادم سيكون يوم " + nextBirthdayDay + ".";
     }
 </script>
 
