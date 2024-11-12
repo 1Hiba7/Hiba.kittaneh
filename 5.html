@@ -3,70 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>العد التنازلي لبداية المدارس الفلسطينية</title>
+    <title>العد التنازلي للمدارس الفلسطينية</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(to bottom, #fffde7, #e3f2fd);
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100vh;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #add8e6, #ffffff);
+            color: #333;
         }
-
-        h1 {
-            font-size: 2em;
+        .countdown-container {
+            width: 40%;
+            text-align: center;
+        }
+        h2 {
+            margin: 20px 0;
+            font-size: 2rem; /* تكبير الخط للعناوين */
+        }
+        .countdown {
+            font-size: 2.5rem; /* تكبير الخط للعد التنازلي */
             margin-bottom: 20px;
         }
-
-        .countdown {
-            font-size: 2em;
-            margin: 10px 0;
+        .countdown div {
+            margin: 5px 0;
+        }
+        .return-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #add8e6;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .return-button:hover {
+            background-color: #90ee90;
         }
     </style>
 </head>
 <body>
-    <h1>العد التنازلي لبداية المدارس الفلسطينية</h1>
-    <div id="days" class="countdown">الأيام: 0</div>
-    <div id="hours" class="countdown">الساعات: 0</div>
-    <div id="minutes" class="countdown">الدقائق: 0</div>
-    <div id="seconds" class="countdown">الثواني: 0</div>
+    <div class="countdown-container" id="endContainer">
+        <h2>العد التنازلي لنهاية المدارس</h2>
+        <div class="countdown" id="endCountdown">جارٍ الحساب...</div>
+    </div>
+
+    <div class="countdown-container" id="startContainer">
+        <h2>العد التنازلي لبداية المدارس</h2>
+        <div class="countdown" id="startCountdown">جارٍ الحساب...</div>
+    </div>
+
+    <a href="https://1hiba7.github.io/Hiba-Kittaneh/" class="return-button">العودة إلى الصفحة الرئيسية</a>
 
     <script>
-        // تعيين تاريخ بداية المدارس: 9 سبتمبر 2024، الساعة 6:00 صباحًا
-        const schoolStartDate = new Date("Sep 9, 2024 06:00:00").getTime();
+        const initialEndDate = new Date("2025-06-20T00:00:00").getTime();
+        let endDate = initialEndDate;
+        const startDate = new Date().getTime();
+        const holidayDuration = 90 * 24 * 60 * 60 * 1000; 
 
         function updateCountdown() {
             const now = new Date().getTime();
-            const distance = schoolStartDate - now;
-
-            // حساب الوقت المتبقي
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // تحديث النصوص
-            document.getElementById("days").innerText = "الأيام: " + days;
-            document.getElementById("hours").innerText = "الساعات: " + hours;
-            document.getElementById("minutes").innerText = "الدقائق: " + minutes;
-            document.getElementById("seconds").innerText = "الثواني: " + seconds;
-
-            // في حال انتهاء العد التنازلي
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.getElementById("days").innerText = "المدارس بدأت!";
-                document.getElementById("hours").innerText = "";
-                document.getElementById("minutes").innerText = "";
-                document.getElementById("seconds").innerText = "";
+            
+            const timeUntilEnd = endDate - now;
+            const endDays = Math.floor(timeUntilEnd / (1000 * 60 * 60 * 24));
+            const endHours = Math.floor((timeUntilEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const endMinutes = Math.floor((timeUntilEnd % (1000 * 60 * 60)) / (1000 * 60));
+            const endSeconds = Math.floor((timeUntilEnd % (1000 * 60)) / 1000);
+            
+            if (timeUntilEnd > 0) {
+                document.getElementById("endCountdown").innerHTML = 
+                    `<div>${endDays} يوم</div><div>${endHours} ساعة</div><div>${endMinutes} دقيقة</div><div>${endSeconds} ثانية</div>`;
+            } else {
+                document.getElementById("endCountdown").innerHTML = "بدأت العطلة";
+                
+                const timeSinceEnd = now - endDate;
+                if (timeSinceEnd > holidayDuration) {
+                    endDate = new Date(new Date(endDate).setFullYear(new Date(endDate).getFullYear() + 1)).getTime();
+                }
             }
+            
+            const timeSinceStart = now - startDate;
+            const startDays = Math.floor(timeSinceStart / (1000 * 60 * 60 * 24));
+            const startHours = Math.floor((timeSinceStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const startMinutes = Math.floor((timeSinceStart % (1000 * 60)) / (1000 * 60));
+            const startSeconds = Math.floor((timeSinceStart % (1000 * 60)) / 1000);
+
+            if (timeSinceStart < 0) {
+                document.getElementById("startCountdown").innerHTML = 
+                    `<div>${Math.abs(startDays)} يوم</div><div>${Math.abs(startHours)} ساعة</div><div>${Math.abs(startMinutes)} دقيقة</div><div>${Math.abs(startSeconds)} ثانية</div>`;
+            } else {
+                document.getElementById("startCountdown").innerHTML = "بدأت المدرسة";
+            }
+            
+            setTimeout(updateCountdown, 1000);
         }
 
-        // تحديث العد التنازلي كل ثانية
-        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
     </script>
 </body>
 </html>
-
