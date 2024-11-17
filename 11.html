@@ -177,11 +177,15 @@
             <button class="scientific" onclick="calculateSqrt()">√</button>
             <button class="scientific" onclick="calculateCubeRoot()">³√</button>
             <button class="scientific" onclick="toggleSign()">±</button>
-            <button class="scientific" onclick="calculatePercent()">%</button>
-            <button class="scientific" onclick="appendPower()">xⁿ</button>
+            <button class="scientific" onclick="appendValue('Math.PI')">π</button>
+            <button class="scientific" onclick="calculateLog()">log</button>
+            <button class="scientific" onclick="calculateLn()">ln</button>
+            <button class="scientific" onclick="calculateSin()">sin</button>
+            <button class="scientific" onclick="calculateCos()">cos</button>
+            <button class="scientific" onclick="calculateTan()">tan</button>
 
             <!-- زر المسح -->
-            <button class="clear" onclick="clearDisplay()">مسح</button>
+            <button class="clear" onclick="clearDisplay()">C</button>
         </div>
         <button class="home-btn" onclick="goHome()">العودة إلى الصفحة الرئيسية</button>
     </div>
@@ -218,16 +222,6 @@
             }
         }
 
-        // التبديل بين الموجب والسالب
-        function toggleSign() {
-            const display = document.getElementById("display");
-            try {
-                display.value = eval(display.value) * -1;
-            } catch {
-                display.value = "خطأ";
-            }
-        }
-
         // حساب النسبة المئوية
         function calculatePercent() {
             const display = document.getElementById("display");
@@ -238,10 +232,64 @@
             }
         }
 
-        // إضافة الأس
-        function appendPower() {
+        // التبديل بين الموجب والسالب
+        function toggleSign() {
             const display = document.getElementById("display");
-            display.value += "**";
+            try {
+                display.value = eval(display.value) * -1;
+            } catch {
+                display.value = "خطأ";
+            }
+        }
+
+        // حساب اللوغاريتم العشري
+        function calculateLog() {
+            const display = document.getElementById("display");
+            try {
+                display.value = Math.log10(eval(display.value));
+            } catch {
+                display.value = "خطأ";
+            }
+        }
+
+        // حساب اللوغاريتم الطبيعي
+        function calculateLn() {
+            const display = document.getElementById("display");
+            try {
+                display.value = Math.log(eval(display.value));
+            } catch {
+                display.value = "خطأ";
+            }
+        }
+
+        // حساب الجيب
+        function calculateSin() {
+            const display = document.getElementById("display");
+            try {
+                display.value = Math.sin(eval(display.value));
+            } catch {
+                display.value = "خطأ";
+            }
+        }
+
+        // حساب جيب التمام
+        function calculateCos() {
+            const display = document.getElementById("display");
+            try {
+                display.value = Math.cos(eval(display.value));
+            } catch {
+                display.value = "خطأ";
+            }
+        }
+
+        // حساب الظل
+        function calculateTan() {
+            const display = document.getElementById("display");
+            try {
+                display.value = Math.tan(eval(display.value));
+            } catch {
+                display.value = "خطأ";
+            }
         }
 
         // تنفيذ العملية الحسابية
