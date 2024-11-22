@@ -44,7 +44,7 @@
             background: #222;
             color: #fff;
             white-space: nowrap;
-            overflow-x: hidden;
+            overflow-x: auto;
             text-overflow: ellipsis;
             direction: ltr;
             margin: 10px auto;
@@ -177,7 +177,7 @@
             <button class="scientific" onclick="calculateSqrt()">√</button>
             <button class="scientific" onclick="calculateCubeRoot()">³√</button>
             <button class="scientific" onclick="toggleSign()">±</button>
-            <button class="scientific" onclick="appendValue('Math.PI')">π</button>
+            <button class="scientific" onclick="appendValue(Math.PI)">π</button>
             <button class="scientific" onclick="calculateLog()">log</button>
             <button class="scientific" onclick="calculateLn()">ln</button>
             <button class="scientific" onclick="calculateSin()">sin</button>
@@ -222,16 +222,6 @@
             }
         }
 
-        // حساب النسبة المئوية
-        function calculatePercent() {
-            const display = document.getElementById("display");
-            try {
-                display.value = eval(display.value) / 100;
-            } catch {
-                display.value = "خطأ";
-            }
-        }
-
         // التبديل بين الموجب والسالب
         function toggleSign() {
             const display = document.getElementById("display");
@@ -246,7 +236,8 @@
         function calculateLog() {
             const display = document.getElementById("display");
             try {
-                display.value = Math.log10(eval(display.value));
+                const value = eval(display.value);
+                display.value = value <= 0 ? "غير صالح" : Math.log10(value);
             } catch {
                 display.value = "خطأ";
             }
@@ -256,7 +247,8 @@
         function calculateLn() {
             const display = document.getElementById("display");
             try {
-                display.value = Math.log(eval(display.value));
+                const value = eval(display.value);
+                display.value = value <= 0 ? "غير صالح" : Math.log(value);
             } catch {
                 display.value = "خطأ";
             }
@@ -266,7 +258,7 @@
         function calculateSin() {
             const display = document.getElementById("display");
             try {
-                display.value = Math.sin(eval(display.value));
+                display.value = Math.sin(eval(display.value) * Math.PI / 180);
             } catch {
                 display.value = "خطأ";
             }
@@ -276,7 +268,7 @@
         function calculateCos() {
             const display = document.getElementById("display");
             try {
-                display.value = Math.cos(eval(display.value));
+                display.value = Math.cos(eval(display.value) * Math.PI / 180);
             } catch {
                 display.value = "خطأ";
             }
@@ -286,7 +278,8 @@
         function calculateTan() {
             const display = document.getElementById("display");
             try {
-                display.value = Math.tan(eval(display.value));
+                const radians = eval(display.value) * Math.PI / 180;
+                display.value = Math.abs(Math.cos(radians)) < 1e-10 ? "غير معرف" : Math.tan(radians);
             } catch {
                 display.value = "خطأ";
             }
