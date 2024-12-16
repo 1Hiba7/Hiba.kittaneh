@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حالة الطقس اليوم</title>
+    <link rel="icon" href="weather.png" type="image/png"> <!-- إضافة الرمز المفضل -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .weather-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            width: 350px;
+            position: relative;
+            overflow: hidden;
+            transition: width 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .weather-info h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        .location p {
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+
+        .temperature h2 {
+            font-size: 50px;
+            margin: 10px 0;
+            color: #e74c3c;
+        }
+
+        .weather-condition p, .extra-info p {
+            font-size: 18px;
+            color: #3498db;
+            margin: 5px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .extra-info {
+            margin-top: 15px;
+            margin-bottom: 40px; /* زيادة المسافة بين آخر عنصر والزر */
+        }
+
+        .extra-info p:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .extra-info p:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .extra-info p:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .extra-info p:nth-child(4) {
+            animation-delay: 0.8s;
+        }
+
+        .extra-info p:nth-child(5) {
+            animation-delay: 1s;
+        }
+
+        .extra-info p:nth-child(6) {
+            animation-delay: 1.2s;
+        }
+
+        .extra-info p:nth-child(7) {
+            animation-delay: 1.4s;
+        }
+
+        .extra-info p:nth-child(8) {
+            animation-delay: 1.6s;
+        }
+
+        .extra-info p:nth-child(9) {
+            animation-delay: 1.8s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform-origin: center center;
+            width: auto;
+            margin-top: 30px; /* تحديد المسافة بين الزر والعناصر العليا */
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 768px) {
+            .weather-container {
+                width: 80%;
+            }
+            .weather-info h1 {
+                font-size: 20px;
+            }
+            .temperature h2 {
+                font-size: 40px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .weather-container {
+                width: 90%;
+            }
+            .weather-info h1 {
+                font-size: 18px;
+            }
+            .temperature h2 {
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <div class="weather-info">
+            <h1>حالة الطقس اليوم</h1>
+            <div class="location">
+                <p>المدينة: <span id="city">قلقيلية</span></p>
+            </div>
+            <div class="temperature">
+                <h2 id="temp">جارٍ تحميل البيانات...</h2>
+            </div>
+            <div class="weather-condition">
+                <p id="condition">جارٍ تحميل البيانات...</p>
+            </div>
+            <div class="extra-info">
+                <p id="wind">سرعة الرياح: جارٍ التحميل...</p>
+                <p id="pressure">الضغط الجوي: جارٍ التحميل...</p>
+                <p id="humidity">الرطوبة: جارٍ التحميل...</p>
+                <p id="visibility">الرؤية: جارٍ التحميل...</p>
+                <p id="rain">نسبة الأمطار: جارٍ التحميل...</p>
+                <p id="clouds">الغطاء السحابي: جارٍ التحميل...</p>
+                <p id="cloud_height">أقصى ارتفاع للسحاب: جارٍ التحميل...</p>
+                <p id="gusts">الهبّات: جارٍ التحميل...</p>
+                <p id="dew_point">درجة التكثف: جارٍ التحميل...</p>
+            </div>
+        </div>
+        <a href="https://1hiba7.github.io/Hiba-Kittaneh/" class="back-button">العودة إلى الصفحة الرئيسية</a>
+    </div>
+    <div class="footer">
+        استوحيت فكرة موقع رصد حالة الطقس من الطالبة: <a href="https://kindataha.github.io/KindaTahaHamdan/" target="_blank">كندة طه حمدان</a>
+    </div>
+
+    <script>
+        const apiKey = '37c76ee12d5690f5e36225b1be856ee9';  // مفتاح API الصحيح
+        const city = 'Qalqilyah'; // اسم المدينة بالإنجليزية
+
+        async function getWeather() {
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ar`;
+            
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (response.ok && data.cod === 200) {
+                    const cityElement = document.getElementById('city');
+                    const tempElement = document.getElementById('temp');
+                    const conditionElement = document.getElementById('condition');
+                    const windElement = document.getElementById('wind');
+                    const pressureElement = document.getElementById('pressure');
+                    const humidityElement = document.getElementById('humidity');
+                    const visibilityElement = document.getElementById('visibility');
+                    const rainElement = document.getElementById('rain');
+                    const cloudsElement = document.getElementById('clouds');
+                    const cloudHeightElement = document.getElementById('cloud_height');
+                    const gustsElement = document.getElementById('gusts');
+                    const dewPointElement = document.getElementById('dew_point');
+
+                    cityElement.textContent = data.name;
+                    tempElement.textContent = `${Math.round(data.main.temp)}°C`;
+                    conditionElement.textContent = data.weather[0].description;
+                    windElement.textContent = `سرعة الرياح: ${data.wind.speed} م/ث`;
+                    pressureElement.textContent = `الضغط الجوي: ${data.main.pressure} hPa`;
+                    humidityElement.textContent = `الرطوبة: ${data.main.humidity}%`;
+                    visibilityElement.textContent = `الرؤية: ${data.visibility / 1000} كم`;
+                    rainElement.textContent = `نسبة الأمطار: ${data.rain ? data.rain['1h'] || 0 : 0} ملم`;
+                    cloudsElement.textContent = `الغطاء السحابي: ${data.clouds.all}%`;
+                    cloudHeightElement.textContent = `أقصى ارتفاع للسحاب: ${data.main.sea_level || 'غير متوفر'}`;
+                    gustsElement.textContent = `الهبّات: ${data.wind.gust || 'غير متوفرة'} م/ث`;
+                    dewPointElement.textContent = `درجة التكثف: غير متوفرة`;
+                } else {
+                    document.getElementById('temp').textContent = "خطأ: البيانات غير متوفرة.";
+                    document.getElementById('condition').textContent = `خطأ: ${data.message || 'حدث خطأ غير متوقع.'}`;
+                }
+            } catch (error) {
+                document.getElementById('temp').textContent = "خطأ في الاتصال بالخادم.";
+                document.getElementById('condition').textContent = "يرجى التحقق من الاتصال بالإنترنت.";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', getWeather);
+    </script>
+</body>
+</html>
