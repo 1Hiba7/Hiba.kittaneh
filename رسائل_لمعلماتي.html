@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسائل للمعلمات</title>
+    <link rel="icon" type="image/png" href="i.png">
+    <style>
+        body {
+            background-color: #fce4ec;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+        h1 {
+            color: #d81b60;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .buttons a {
+            display: inline-block;
+            padding: 15px 25px;
+            color: white;
+            background-color: #d81b60;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            max-width: 300px;
+            width: 80%;
+            text-align: center;
+        }
+        .buttons a:hover {
+            background-color: #880e4f;
+        }
+        .message {
+            background-color: #fff;
+            border: 2px solid #d81b60;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .navigation {
+            margin-top: 20px;
+        }
+        .navigation a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            color: white;
+            background-color: #d81b60;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .navigation a:hover {
+            background-color: #880e4f;
+        }
+        @keyframes heart-float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #e91e63;
+            transform: rotate(45deg);
+            animation: heart-float 5s linear infinite;
+            z-index: -1;
+        }
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #e91e63;
+            border-radius: 50%;
+        }
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+        .heart:after {
+            left: 10px;
+            top: 0;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            .buttons a {
+                font-size: 1em;
+            }
+            .navigation a {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="main-page">
+        <h1>رسائل للمعلمات</h1>
+        <div class="buttons">
+            <a href="#" onclick="showMessage('نوال الطبيب', 'أقدر جهودك العظيمة في قيادة المدرسة بحكمة ورؤية متميزة. لن تستطيع الكلمات أن تفي بحجم عطائكِ وإبداعكِ. شكراً لدعمك الدائم وتشجيعك لنا على التفوق. أنتِ مصدر فخر لنا جميعاً.');">المديرة: نوال الطبيب</a>
+            <a href="#" onclick="showMessage('خالدة جعيدي', 'أشكركِ من أعماق قلبي على عطائكِ المخلص في التعليم والتنظيم. لن تكفي الكلمات لوصف جهدكِ الكبير. دوركِ المزدوج يعكس إخلاصكِ وتفانيكِ في العمل.');">معلمة الاجتماعيات: خالدة جعيدي</a>
+            <a href="#" onclick="showMessage('سلوى', 'أشكركِ لدعمكِ العاطفي والنفسي الذي يجعل المدرسة مكاناً أفضل. لن تجد الكلمات التي تعبر عن امتناننا لكِ.');">المرشدة: سلوى</a>
+            <a href="#" onclick="showMessage('لينا', 'أشكركِ على توجيهاتكِ القيمة ودعمكِ المستمر لطلاب المدرسة. لا تستطيع الكلمات أن تفي بحجم عطائكِ وجهودكِ المستمرة.');">المرشدة: لينا</a>
+            <a href="#" onclick="showMessage('حليمة', 'أشكركِ على حرصكِ الدائم على نظافة المدرسة واهتمامكِ بجمالها ونباتاتها. كلمات الشكر لا تكفي للتعبير عن تقديرنا لكِ.');">الآذنة: حليمة</a>
+            <a href="#" onclick="showMessage('صفاء جعيدي', 'أشكركِ لإبداعكِ ودعمكِ في تعليمنا بطرق مبتكرة وعصرية. عطاؤكِ لا يُقدر بثمن، ولا توجد كلمات كافية لتقديم الشكر لكِ.');">معلمة التكنولوجيا: صفاء جعيدي</a>
+            <a href="#" onclick="showMessage('نجلاء', 'أشكركِ لمساعدتنا في تطوير مهاراتنا اللغوية وجعل تعلم الإنجليزية ممتعاً. جهودكِ لا يمكن للكلمات أن تصفها.');">معلمة الإنجليزي: نجلاء</a>
+            <a href="#" onclick="showMessage('أفنان', 'أشكركِ على جهودكِ في جعلنا نحب لغتنا ونفخر بها. أنتِ تزرعين فينا حب الأدب والثقافة، ولا يمكن للكلمات أن تفي حقكِ.');">معلمة العربي: أفنان</a>
+            <a href="#" onclick="showMessage('خولة', 'أشكركِ على عطائكِ الذي سيبقى خالداً في نفوسنا. كلمات الشكر لا تستطيع وصف مقدار الجهد والعطاء الذي قدمتيه.');">معلمة العلوم المتقاعدة: خولة</a>
+            <a href="#" onclick="showMessage('روضة', 'أشكركِ على جهودكِ الرائعة في تبسيط العلوم وجعلنا نفهم أسرار العالم من حولنا. لا توجد كلمات توازي جهودكِ.');">معلمة العلوم: روضة</a>
+            <a href="#" onclick="showMessage('أفنان', 'أشكركِ على غرس القيم والمبادئ الدينية السامية في نفوسنا. لن تكفي الكلمات للتعبير عن امتناننا لكِ.');">معلمة الدين: دالية</a>
+            <a href="#" onclick="showMessage('إصلاح', 'أشكركِ على تفانيكِ في تبسيط المعادلات وجعل الرياضيات ممتعة ومفهومة للجميع. جهودكِ تجعل العلم أكثر إشراقاً، ولن تكفي الكلمات للحديث عن عطائكِ الكبير.');">معلمة الرياضيات: إصلاح</a>
+        </div>
+    </div>
+
+    <div id="message-page" style="display:none;">
+        <h1 id="teacher-name"></h1>
+        <div class="message" id="teacher-message"></div>
+        <div class="navigation">
+            <a href="#" onclick="goBack()">العودة إلى السابق</a>
+            <a href="https://1hiba7.github.io/Hiba-Kittaneh/">العودة إلى الصفحة الرئيسية</a>
+        </div>
+    </div>
+
+    <script>
+        function showMessage(name, message) {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('message-page').style.display = 'block';
+            document.getElementById('teacher-name').innerText = name;
+            document.getElementById('teacher-message').innerText = message;
+        }
+
+        function goBack() {
+            document.getElementById('main-page').style.display = 'block';
+            document.getElementById('message-page').style.display = 'none';
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.top = (document.querySelector('.buttons').getBoundingClientRect().bottom + 20) + 'px';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        setInterval(createHeart, 500);
+    </script>
+</body>
+</html>
