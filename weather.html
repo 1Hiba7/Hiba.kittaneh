@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
     <title>حالة الطقس اليوم</title>
     <link rel="icon" href="weather.png" type="image/png">
     <style>
@@ -16,16 +16,17 @@
             justify-content: center;
             height: 100vh;
             background: linear-gradient(to right, #3498db, #2ecc71);
-            color: #000; /* تم تغيير لون النصوص إلى الأسود */
+            color: #000;
         }
 
         .weather-container {
+            width: 1024px;
+            max-width: none;
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             padding: 30px;
             text-align: center;
-            max-width: 900px;
             display: grid;
             grid-template-areas: 
                 "icon icon icon"
@@ -126,23 +127,6 @@
 
         .footer a:hover {
             text-decoration: underline;
-        }
-
-        @media screen and (max-width: 768px) {
-            .weather-container {
-                grid-template-areas:
-                    "icon"
-                    "search"
-                    "center"
-                    "left"
-                    "right"
-                    "button"
-                    "footer";
-            }
-
-            .left, .right, .center {
-                text-align: center;
-            }
         }
     </style>
 </head>
