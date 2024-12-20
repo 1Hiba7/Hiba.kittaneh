@@ -8,19 +8,19 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            margin: 0; /* إزالة الهوامش الافتراضية */
+            margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center; /* توسيط الحاوية الرئيسية أفقياً */
-            align-items: center; /* توسيط الحاوية الرئيسية عمودياً */
-            height: 100vh; /* استخدام كامل ارتفاع الشاشة */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             background: linear-gradient(to right, #3498db, #2ecc71);
             color: #000;
         }
 
         .weather-container {
             width: 1024px;
-            max-width: none; /* عدم تحديد حد أقصى للعرض */
+            max-width: none;
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
@@ -35,14 +35,18 @@
                 "footer footer footer";
             grid-gap: 20px;
             align-items: start;
-            margin: 0 auto; /* توسيط الحاوية أفقياً */
-            overflow: hidden; /* منع العناصر من تجاوز حدود الحاوية */
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .weather-info {
+            grid-area: icon;
         }
 
         .weather-info img {
-            grid-area: icon;
             width: 120px;
             height: 120px;
+            display: block;
             margin: 0 auto;
         }
 
@@ -78,6 +82,9 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            opacity: 0; /* البداية: غير مرئية */
+            transform: translateY(20px); /* ابدأ بأسفل */
+            transition: all 0.5s ease-out; /* تأثير الانتقال */
         }
 
         .center {
@@ -93,6 +100,11 @@
         .right {
             grid-area: right;
             text-align: right;
+        }
+
+        .visible {
+            opacity: 1; /* اجعلها مرئية */
+            transform: translateY(0); /* حركها لموضعها الطبيعي */
         }
 
         .back-button {
@@ -140,19 +152,19 @@
             <input type="text" id="city-input" placeholder="أدخل اسم المدينة">
             <button onclick="getWeather()">عرض الطقس</button>
         </div>
-        <div class="center">
+        <div class="center" id="center">
             <p id="city-name">المدينة: --</p>
             <p id="temp">درجة الحرارة: --°C</p>
             <p id="condition">الوصف: --</p>
             <p id="pressure">الضغط الجوي: -- hPa</p>
         </div>
-        <div class="right">
+        <div class="right" id="right">
             <p id="humidity">الرطوبة: --%</p>
             <p id="visibility">الرؤية: -- كم</p>
             <p id="rain">نسبة الأمطار: -- ملم</p>
             <p id="clouds">الغطاء السحابي: --%</p>
         </div>
-        <div class="left">
+        <div class="left" id="left">
             <p id="cloud-height">أقصى ارتفاع للسحاب: -- متر</p>
             <p id="gusts">الهبّات: -- م/ث</p>
             <p id="sunrise">شروق الشمس: --</p>
@@ -190,6 +202,11 @@
                     document.getElementById('gusts').textContent = `الهبّات: ${data.wind.gust || '--'} م/ث`;
                     document.getElementById('sunrise').textContent = `شروق الشمس: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString('ar-EG')}`;
                     document.getElementById('sunset').textContent = `غروب الشمس: ${new Date(data.sys.sunset * 1000).toLocaleTimeString('ar-EG')}`;
+
+                    // تطبيق الأنيميشن
+                    document.getElementById('center').classList.add('visible');
+                    document.getElementById('right').classList.add('visible');
+                    document.getElementById('left').classList.add('visible');
                 } else {
                     alert(`خطأ: ${data.message}`);
                 }
