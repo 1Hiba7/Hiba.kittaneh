@@ -8,20 +8,19 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            margin: 0;
+            margin: 0; /* إزالة الهوامش الافتراضية */
             padding: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: center; /* توسيط الحاوية الرئيسية أفقياً */
+            align-items: center; /* توسيط الحاوية الرئيسية عمودياً */
+            height: 100vh; /* استخدام كامل ارتفاع الشاشة */
             background: linear-gradient(to right, #3498db, #2ecc71);
             color: #000;
         }
 
         .weather-container {
             width: 1024px;
-            max-width: none;
+            max-width: none; /* عدم تحديد حد أقصى للعرض */
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
@@ -36,6 +35,8 @@
                 "footer footer footer";
             grid-gap: 20px;
             align-items: start;
+            margin: 0 auto; /* توسيط الحاوية أفقياً */
+            overflow: hidden; /* منع العناصر من تجاوز حدود الحاوية */
         }
 
         .weather-info img {
