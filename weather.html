@@ -4,133 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حالة الطقس اليوم</title>
-    <link rel="icon" href="weather.png" type="image/png"> <!-- إضافة الرمز المفضل -->
+    <link rel="icon" href="weather.png" type="image/png">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f8ff;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: #000; /* تم تغيير لون النصوص إلى الأسود */
         }
 
         .weather-container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             padding: 30px;
             text-align: center;
-            width: 350px;
-            position: relative;
-            overflow: hidden;
-            transition: width 0.3s ease;
-            margin-bottom: 20px;
+            max-width: 900px;
+            display: grid;
+            grid-template-areas: 
+                "icon icon icon"
+                "search search search"
+                "left center right"
+                "button button button"
+                "footer footer footer";
+            grid-gap: 20px;
+            align-items: start;
         }
 
-        .weather-info h1 {
-            color: #2c3e50;
-            font-size: 24px;
-            margin-top: 20px;
+        .weather-info img {
+            grid-area: icon;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
         }
 
-        .location p {
-            font-size: 16px;
-            color: #7f8c8d;
+        .city-input {
+            grid-area: search;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .temperature h2 {
-            font-size: 50px;
-            margin: 10px 0;
-            color: #e74c3c;
+        .city-input input {
+            padding: 8px;
+            border: 2px solid #2ecc71;
+            border-radius: 8px;
+            width: 250px;
         }
 
-        .weather-condition p, .extra-info p {
-            font-size: 18px;
-            color: #3498db;
-            margin: 5px 0;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.5s ease forwards;
+        .city-input button {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .extra-info {
-            margin-top: 15px;
-            margin-bottom: 40px; /* زيادة المسافة بين آخر عنصر والزر */
+        .city-input button:hover {
+            background-color: #2980b9;
         }
 
-        .extra-info p:nth-child(1) {
-            animation-delay: 0.2s;
+        .center, .left, .right {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .extra-info p:nth-child(2) {
-            animation-delay: 0.4s;
+        .center {
+            grid-area: center;
+            text-align: center;
         }
 
-        .extra-info p:nth-child(3) {
-            animation-delay: 0.6s;
+        .left {
+            grid-area: left;
+            text-align: left;
         }
 
-        .extra-info p:nth-child(4) {
-            animation-delay: 0.8s;
-        }
-
-        .extra-info p:nth-child(5) {
-            animation-delay: 1s;
-        }
-
-        .extra-info p:nth-child(6) {
-            animation-delay: 1.2s;
-        }
-
-        .extra-info p:nth-child(7) {
-            animation-delay: 1.4s;
-        }
-
-        .extra-info p:nth-child(8) {
-            animation-delay: 1.6s;
-        }
-
-        .extra-info p:nth-child(9) {
-            animation-delay: 1.8s;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .right {
+            grid-area: right;
+            text-align: right;
         }
 
         .back-button {
-            background-color: #3498db;
+            grid-area: button;
+            display: inline-block;
+            background: linear-gradient(90deg, #3498db, #2980b9);
             color: white;
-            border: none;
             padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
+            border: none;
+            border-radius: 8px;
             font-size: 16px;
-            text-align: center;
             text-decoration: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            transform-origin: center center;
-            width: auto;
-            margin-top: 30px; /* تحديد المسافة بين الزر والعناصر العليا */
+            transition: background-position 0.3s ease;
+            background-size: 200% 100%;
+            background-position: left bottom;
+            margin-top: 10px;
         }
 
         .back-button:hover {
-            background-color: #2980b9;
-            transform: scale(1.2);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            z-index: 1;
+            background-position: right bottom;
         }
 
         .footer {
-            margin-top: 20px;
+            grid-area: footer;
             font-size: 14px;
-            color: #555;
+            color: #34495e;
         }
 
         .footer a {
@@ -144,25 +130,18 @@
 
         @media screen and (max-width: 768px) {
             .weather-container {
-                width: 80%;
+                grid-template-areas:
+                    "icon"
+                    "search"
+                    "center"
+                    "left"
+                    "right"
+                    "button"
+                    "footer";
             }
-            .weather-info h1 {
-                font-size: 20px;
-            }
-            .temperature h2 {
-                font-size: 40px;
-            }
-        }
 
-        @media screen and (max-width: 480px) {
-            .weather-container {
-                width: 90%;
-            }
-            .weather-info h1 {
-                font-size: 18px;
-            }
-            .temperature h2 {
-                font-size: 35px;
+            .left, .right, .center {
+                text-align: center;
             }
         }
     </style>
@@ -170,78 +149,67 @@
 <body>
     <div class="weather-container">
         <div class="weather-info">
-            <h1>حالة الطقس اليوم</h1>
-            <div class="location">
-                <p>المدينة: <span id="city">قلقيلية</span></p>
-            </div>
-            <div class="temperature">
-                <h2 id="temp">جارٍ تحميل البيانات...</h2>
-            </div>
-            <div class="weather-condition">
-                <p id="condition">جارٍ تحميل البيانات...</p>
-            </div>
-            <div class="extra-info">
-                <p id="wind">سرعة الرياح: جارٍ التحميل...</p>
-                <p id="pressure">الضغط الجوي: جارٍ التحميل...</p>
-                <p id="humidity">الرطوبة: جارٍ التحميل...</p>
-                <p id="visibility">الرؤية: جارٍ التحميل...</p>
-                <p id="rain">نسبة الأمطار: جارٍ التحميل...</p>
-                <p id="clouds">الغطاء السحابي: جارٍ التحميل...</p>
-                <p id="cloud_height">أقصى ارتفاع للسحاب: جارٍ التحميل...</p>
-                <p id="gusts">الهبّات: جارٍ التحميل...</p>
-                <p id="dew_point">درجة التكثف: جارٍ التحميل...</p>
-            </div>
+            <img id="weather-icon" src="" alt="رمز الطقس">
+        </div>
+        <div class="city-input">
+            <input type="text" id="city-input" placeholder="أدخل اسم المدينة">
+            <button onclick="getWeather()">عرض الطقس</button>
+        </div>
+        <div class="center">
+            <p id="city-name">المدينة: --</p>
+            <p id="temp">درجة الحرارة: --°C</p>
+            <p id="condition">الوصف: --</p>
+            <p id="pressure">الضغط الجوي: -- hPa</p>
+        </div>
+        <div class="right">
+            <p id="humidity">الرطوبة: --%</p>
+            <p id="visibility">الرؤية: -- كم</p>
+            <p id="rain">نسبة الأمطار: -- ملم</p>
+            <p id="clouds">الغطاء السحابي: --%</p>
+        </div>
+        <div class="left">
+            <p id="cloud-height">أقصى ارتفاع للسحاب: -- متر</p>
+            <p id="gusts">الهبّات: -- م/ث</p>
+            <p id="sunrise">شروق الشمس: --</p>
+            <p id="sunset">غروب الشمس: --</p>
         </div>
         <a href="https://1hiba7.github.io/Hiba-Kittaneh/" class="back-button">العودة إلى الصفحة الرئيسية</a>
-    </div>
-    <div class="footer">
-        استوحيت فكرة موقع رصد حالة الطقس من الطالبة: <a href="https://kindataha.github.io/KindaTahaHamdan/" target="_blank">كندة طه حمدان</a>
+        <div class="footer">
+            استوحيت فكرة موقع رصد حالة الطقس من الطالبة: 
+            <a href="https://kindataha.github.io/KindaTahaHamdan/" target="_blank">كندة طه حمدان</a>
+        </div>
     </div>
 
     <script>
-        const apiKey = '37c76ee12d5690f5e36225b1be856ee9';  // مفتاح API الصحيح
-        const city = 'Qalqilyah'; // اسم المدينة بالإنجليزية
+        const apiKey = '37c76ee12d5690f5e36225b1be856ee9';
 
         async function getWeather() {
+            const city = document.getElementById('city-input').value || 'Qalqilyah';
             const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ar`;
-            
+
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
 
-                if (response.ok && data.cod === 200) {
-                    const cityElement = document.getElementById('city');
-                    const tempElement = document.getElementById('temp');
-                    const conditionElement = document.getElementById('condition');
-                    const windElement = document.getElementById('wind');
-                    const pressureElement = document.getElementById('pressure');
-                    const humidityElement = document.getElementById('humidity');
-                    const visibilityElement = document.getElementById('visibility');
-                    const rainElement = document.getElementById('rain');
-                    const cloudsElement = document.getElementById('clouds');
-                    const cloudHeightElement = document.getElementById('cloud_height');
-                    const gustsElement = document.getElementById('gusts');
-                    const dewPointElement = document.getElementById('dew_point');
-
-                    cityElement.textContent = data.name;
-                    tempElement.textContent = `${Math.round(data.main.temp)}°C`;
-                    conditionElement.textContent = data.weather[0].description;
-                    windElement.textContent = `سرعة الرياح: ${data.wind.speed} م/ث`;
-                    pressureElement.textContent = `الضغط الجوي: ${data.main.pressure} hPa`;
-                    humidityElement.textContent = `الرطوبة: ${data.main.humidity}%`;
-                    visibilityElement.textContent = `الرؤية: ${data.visibility / 1000} كم`;
-                    rainElement.textContent = `نسبة الأمطار: ${data.rain ? data.rain['1h'] || 0 : 0} ملم`;
-                    cloudsElement.textContent = `الغطاء السحابي: ${data.clouds.all}%`;
-                    cloudHeightElement.textContent = `أقصى ارتفاع للسحاب: ${data.main.sea_level || 'غير متوفر'}`;
-                    gustsElement.textContent = `الهبّات: ${data.wind.gust || 'غير متوفرة'} م/ث`;
-                    dewPointElement.textContent = `درجة التكثف: غير متوفرة`;
+                if (response.ok) {
+                    document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                    document.getElementById('city-name').textContent = `المدينة: ${data.name}`;
+                    document.getElementById('temp').textContent = `درجة الحرارة: ${Math.round(data.main.temp)}°C`;
+                    document.getElementById('condition').textContent = `الوصف: ${data.weather[0].description}`;
+                    document.getElementById('pressure').textContent = `الضغط الجوي: ${data.main.pressure} hPa`;
+                    document.getElementById('humidity').textContent = `الرطوبة: ${data.main.humidity}%`;
+                    document.getElementById('visibility').textContent = `الرؤية: ${(data.visibility / 1000).toFixed(1)} كم`;
+                    document.getElementById('rain').textContent = `نسبة الأمطار: ${data.rain?.['1h'] || 0} ملم`;
+                    document.getElementById('clouds').textContent = `الغطاء السحابي: ${data.clouds.all}%`;
+                    document.getElementById('cloud-height').textContent = `أقصى ارتفاع للسحاب: ${data.main.sea_level || '--'} متر`;
+                    document.getElementById('gusts').textContent = `الهبّات: ${data.wind.gust || '--'} م/ث`;
+                    document.getElementById('sunrise').textContent = `شروق الشمس: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString('ar-EG')}`;
+                    document.getElementById('sunset').textContent = `غروب الشمس: ${new Date(data.sys.sunset * 1000).toLocaleTimeString('ar-EG')}`;
                 } else {
-                    document.getElementById('temp').textContent = "خطأ: البيانات غير متوفرة.";
-                    document.getElementById('condition').textContent = `خطأ: ${data.message || 'حدث خطأ غير متوقع.'}`;
+                    alert(`خطأ: ${data.message}`);
                 }
             } catch (error) {
-                document.getElementById('temp').textContent = "خطأ في الاتصال بالخادم.";
-                document.getElementById('condition').textContent = "يرجى التحقق من الاتصال بالإنترنت.";
+                alert("حدث خطأ أثناء جلب البيانات.");
             }
         }
 
