@@ -41,6 +41,9 @@
 
         .weather-info {
             grid-area: icon;
+            background-color: rgba(0, 0, 0, 0.1); /* خلفية شفافة متباينة */
+            border-radius: 15px; /* حواف دائرية */
+            padding: 10px;
         }
 
         .weather-info img {
@@ -48,6 +51,8 @@
             height: 120px;
             display: block;
             margin: 0 auto;
+            border: 2px solid #3498db; /* حد بارز للصورة */
+            border-radius: 50%; /* حواف دائرية */
         }
 
         .city-input {
@@ -103,7 +108,7 @@
         }
 
         .visible {
-            opacity: 1; /* اجعلها مرئية */
+            opacity: 1; /* اجعل العناصر مرئية */
             transform: translateY(0); /* حركها لموضعها الطبيعي */
         }
 
