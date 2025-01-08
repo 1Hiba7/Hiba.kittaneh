@@ -193,11 +193,28 @@
     <a href="https://1hiba7.github.io/Hiba-Kittaneh/" class="return-button">العودة إلى الصفحة الرئيسية</a>
 
     <script>
-        function showSection(id) {
-            document.querySelectorAll('section').forEach(section => {
-                section.classList.remove('active');
+        const prayerNames = {
+            Fajr: "الفجر",
+            Sunrise: "الشروق",
+            Sunset: "غروب الشمس",
+            Dhuhr: "الظهر",
+            Asr: "العصر",
+            Maghrib: "المغرب",
+            Isha: "العشاء",
+            Imsak: "الإمساك",
+            Midnight: "منتصف الليل",
+            Firstthird: "الثلث الأول",
+            Lastthird: "الثلث الأخير"
+        };
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll("section");
+            sections.forEach(section => {
+                section.classList.remove("active");
             });
-            document.getElementById(id).classList.add('active');
+
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add("active");
         }
 
         async function getPrayerTimes() {
@@ -209,7 +226,7 @@
             const body = document.getElementById("prayerTimesBody");
             body.innerHTML = "";
             for (const [prayer, time] of Object.entries(timings)) {
-                body.innerHTML += `<tr><td>${prayer}</td><td>${time}</td></tr>`;
+                body.innerHTML += `<tr><td>${prayerNames[prayer] || prayer}</td><td>${time}</td></tr>`;
             }
         }
 
