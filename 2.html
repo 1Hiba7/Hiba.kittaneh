@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,164 +8,333 @@
     <link rel="icon" type="image/png" href="2.png">
 
     <style>
+        :root {
+            --bg-color: #f4f4f9;
+            --container-bg: white;
+            --text-color: #333;
+            --button-bg: #add8e6;
+            --button-hover: #90ee90;
+            --error-color: #ff4444;
+            --border-color: #ddd;
+        }
+
+        .dark-mode {
+            --bg-color: #1a1a1a;
+            --container-bg: #2d2d2d;
+            --text-color: #f0f0f0;
+            --button-bg: #3a5f73;
+            --button-hover: #4c8b4c;
+            --error-color: #ff6b6b;
+            --border-color: #444;
+        }
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background-color: #f4f4f9;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
         }
+
         .container {
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
-            background-color: white;
+            background-color: var(--container-bg);
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
         }
+
         input {
             padding: 10px;
             margin: 10px 0;
             width: 100%;
+            background-color: var(--container-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
         }
+
         .buttons {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
+            margin: 15px 0;
         }
+
         button {
             padding: 10px;
-            width: 48%; /* ليجعل الأزرار بجانب بعضها */
-            background-color: #add8e6; /* الأزرق الفاتح */
+            flex: 1;
+            background-color: var(--button-bg);
             color: white;
             border: none;
-            border-radius: 15px; /* لجعل الزر دون حواف مدببة */
+            border-radius: 15px;
             cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
         }
+
         button:hover {
-            background-color: #90ee90; /* الأخضر الفاتح */
+            background-color: var(--button-hover);
         }
+
         p {
             margin-top: 20px;
         }
+
         #result {
-            text-align: left;
+            text-align: right;
+            padding: 15px;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            min-height: 50px;
+        }
+
+        .error {
+            color: var(--error-color);
+            font-weight: bold;
+        }
+
+        .loader {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--button-bg);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            margin: 10px auto;
+            display: none;
+        }
+
+        .theme-switch {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            .buttons {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+                margin-bottom: 5px;
+            }
         }
     </style>
 </head>
 <body>
+    <button class="theme-switch" onclick="toggleDarkMode()">🌓</button>
 
-<div class="container">
-    <h2>حساب العمر وتاريخ يوم الميلاد القادم</h2>
-    <label for="birthdate">أدخل تاريخ ميلادك:</label><br>
-    <input type="date" id="birthdate" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD"><br>
-    
-    <!-- قسم الأزرار لجعلها بجانب بعضها -->
-    <div class="buttons">
-        <button onclick="startCalculatingAge()">احسب العمر</button>
-        <button onclick="startBirthdayCountdown()">احسب تاريخ يوم الميلاد القادم</button>
+    <div class="container">
+        <h2>حساب العمر وتاريخ يوم الميلاد القادم</h2>
+        <label for="birthdate">أدخل تاريخ ميلادك:</label><br>
+        <input type="date" id="birthdate" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD"><br>
+        
+        <div class="buttons">
+            <button onclick="startCalculatingAge()">احسب العمر</button>
+            <button onclick="startBirthdayCountdown()">احسب تاريخ يوم الميلاد القادم</button>
+        </div>
+
+        <div class="buttons">
+            <button onclick="clearResults()">مسح النتائج</button>
+            <button onclick="saveBirthdate()">حفظ التاريخ</button>
+        </div>
+
+        <div class="loader" id="loader"></div>
+        <p id="result"></p>
+
+        <button onclick="window.location.href='https://1hiba7.github.io/Hiba-Kittaneh/'">
+            العودة إلى الصفحة الرئيسية
+        </button>
     </div>
 
-    <p id="result"></p>
+    <script>
+        let interval;
+        let birthdayInterval;
+        let isDarkMode = false;
 
-    <button onclick="window.location.href='https://1hiba7.github.io/Hiba-Kittaneh/'">
-        العودة إلى الصفحة الرئيسية
-    </button>
-</div>
+        // تحميل الوضع المحفوظ عند بدء الصفحة
+        window.onload = function() {
+            const savedMode = localStorage.getItem('darkMode');
+            if (savedMode === 'true') {
+                toggleDarkMode();
+            }
+            
+            const savedBirthdate = localStorage.getItem('savedBirthdate');
+            if (savedBirthdate) {
+                document.getElementById('birthdate').value = savedBirthdate;
+            }
+        };
 
-<script>
-    let interval;
-    let birthdayInterval;
-
-    function startCalculatingAge() {
-        clearInterval(birthdayInterval); // إيقاف عداد يوم الميلاد
-        let birthdate = document.getElementById('birthdate').value;
-        if (birthdate === "") {
-            document.getElementById('result').innerHTML = "الرجاء إدخال تاريخ الميلاد";
-            return;
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeBtn = document.querySelector('.theme-switch');
+            themeBtn.textContent = isDarkMode ? '🌞' : '🌙';
         }
 
-        clearInterval(interval); // إيقاف أي عداد سابق
-        calculateAge(); // حساب العمر مباشرةً
-        interval = setInterval(calculateAge, 1000); // تحديث العمر كل ثانية
-    }
-
-    function calculateAge() {
-        let birthdate = new Date(document.getElementById('birthdate').value);
-        let now = new Date();
-        
-        let diffInSeconds = Math.floor((now - birthdate) / 1000);
-        
-        let years = Math.floor(diffInSeconds / (365.25 * 24 * 60 * 60));
-        diffInSeconds -= years * 365.25 * 24 * 60 * 60;
-        
-        let weeks = Math.floor(diffInSeconds / (7 * 24 * 60 * 60));
-        diffInSeconds -= weeks * 7 * 24 * 60 * 60;
-
-        let days = Math.floor(diffInSeconds / (24 * 60 * 60));
-        diffInSeconds -= days * 24 * 60 * 60;
-        
-        let hours = Math.floor(diffInSeconds / (60 * 60));
-        diffInSeconds -= hours * 60 * 60;
-        
-        let minutes = Math.floor(diffInSeconds / 60);
-        let seconds = diffInSeconds % 60;
-
-        document.getElementById('result').innerHTML = 
-            "عمرك هو:<br>" + years + " سنة<br>" + 
-            weeks + " أسبوع<br>" + 
-            days + " يوم<br>" + 
-            hours + " ساعة<br>" + 
-            minutes + " دقيقة<br>" + 
-            seconds + " ثانية";
-    }
-
-    function startBirthdayCountdown() {
-        clearInterval(interval); // إيقاف عداد العمر
-        clearInterval(birthdayInterval); // إيقاف أي عداد سابق
-        calculateNextBirthday(); // حساب العد التنازلي مباشرة
-        birthdayInterval = setInterval(calculateNextBirthday, 1000); // تحديث العد التنازلي كل ثانية
-    }
-
-    function calculateNextBirthday() {
-        let birthdate = new Date(document.getElementById('birthdate').value);
-        if (!birthdate) {
-            document.getElementById('result').innerHTML = "الرجاء إدخال تاريخ الميلاد";
-            return;
+        function validateDate(birthdate) {
+            const today = new Date();
+            const inputDate = new Date(birthdate);
+            
+            if (inputDate > today) {
+                document.getElementById('result').innerHTML = 
+                    '<span class="error">لا يمكن أن يكون تاريخ الميلاد في المستقبل!</span>';
+                return false;
+            }
+            return true;
         }
 
-        let now = new Date();
-        let nextBirthday = new Date(now.getFullYear(), birthdate.getMonth(), birthdate.getDate());
-        if (nextBirthday < now) {
-            nextBirthday.setFullYear(now.getFullYear() + 1);
+        function startCalculatingAge() {
+            clearInterval(birthdayInterval);
+            let birthdate = document.getElementById('birthdate').value;
+            if (birthdate === "") {
+                document.getElementById('result').innerHTML = 
+                    '<span class="error">الرجاء إدخال تاريخ الميلاد</span>';
+                return;
+            }
+            
+            if (!validateDate(birthdate)) return;
+            
+            showLoader();
+            calculateAge();
+            interval = setInterval(calculateAge, 1000);
         }
 
-        let diffInTime = nextBirthday - now;
-        let diffInSeconds = Math.floor(diffInTime / 1000);
+        function calculateAge() {
+            let birthdate = new Date(document.getElementById('birthdate').value);
+            let now = new Date();
+            
+            let diffInSeconds = Math.floor((now - birthdate) / 1000);
+            
+            let years = Math.floor(diffInSeconds / (365.25 * 24 * 60 * 60));
+            diffInSeconds -= years * 365.25 * 24 * 60 * 60;
+            
+            let weeks = Math.floor(diffInSeconds / (7 * 24 * 60 * 60));
+            diffInSeconds -= weeks * 7 * 24 * 60 * 60;
 
-        let days = Math.floor(diffInSeconds / (24 * 60 * 60));
-        diffInSeconds -= days * 24 * 60 * 60;
+            let days = Math.floor(diffInSeconds / (24 * 60 * 60));
+            diffInSeconds -= days * 24 * 60 * 60;
+            
+            let hours = Math.floor(diffInSeconds / (60 * 60));
+            diffInSeconds -= hours * 60 * 60;
+            
+            let minutes = Math.floor(diffInSeconds / 60);
+            let seconds = diffInSeconds % 60;
 
-        let hours = Math.floor(diffInSeconds / (60 * 60));
-        diffInSeconds -= hours * 60 * 60;
+            hideLoader();
+            document.getElementById('result').innerHTML = 
+                "عمرك هو:<br>" + years + " سنة<br>" + 
+                weeks + " أسبوع<br>" + 
+                days + " يوم<br>" + 
+                hours + " ساعة<br>" + 
+                minutes + " دقيقة<br>" + 
+                seconds + " ثانية";
+        }
 
-        let minutes = Math.floor(diffInSeconds / 60);
-        let seconds = diffInSeconds % 60;
+        function startBirthdayCountdown() {
+            clearInterval(interval);
+            clearInterval(birthdayInterval);
+            calculateNextBirthday();
+            birthdayInterval = setInterval(calculateNextBirthday, 1000);
+        }
 
-        let weeks = Math.floor(days / 7);
-        days = days % 7;
+        function calculateNextBirthday() {
+            let birthdate = document.getElementById('birthdate').value;
+            if (birthdate === "") {
+                document.getElementById('result').innerHTML = 
+                    '<span class="error">الرجاء إدخال تاريخ الميلاد</span>';
+                return;
+            }
 
-        let daysOfWeek = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-        let nextBirthdayDay = daysOfWeek[nextBirthday.getDay()];
+            showLoader();
+            let birthDateObj = new Date(birthdate);
+            let now = new Date();
+            let nextBirthday = new Date(now.getFullYear(), birthDateObj.getMonth(), birthDateObj.getDate());
+            
+            if (nextBirthday < now) {
+                nextBirthday.setFullYear(now.getFullYear() + 1);
+            }
 
-        document.getElementById('result').innerHTML = 
-            "العد التنازلي حتى يوم ميلادك القادم هو:<br>" + 
-            weeks + " أسبوع<br>" + 
-            days + " يوم<br>" + 
-            hours + " ساعة<br>" + 
-            minutes + " دقيقة<br>" + 
-            seconds + " ثانية<br>" +
-            "يوم ميلادك القادم سيكون يوم " + nextBirthdayDay + ".";
-    }
-</script>
+            let diffInTime = nextBirthday - now;
+            let diffInSeconds = Math.floor(diffInTime / 1000);
 
+            let days = Math.floor(diffInSeconds / (24 * 60 * 60));
+            diffInSeconds -= days * 24 * 60 * 60;
+
+            let hours = Math.floor(diffInSeconds / (60 * 60));
+            diffInSeconds -= hours * 60 * 60;
+
+            let minutes = Math.floor(diffInSeconds / 60);
+            let seconds = diffInSeconds % 60;
+
+            let weeks = Math.floor(days / 7);
+            days = days % 7;
+
+            let daysOfWeek = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            let nextBirthdayDay = daysOfWeek[nextBirthday.getDay()];
+
+            hideLoader();
+            document.getElementById('result').innerHTML = 
+                "العد التنازلي حتى يوم ميلادك القادم هو:<br>" + 
+                weeks + " أسبوع<br>" + 
+                days + " يوم<br>" + 
+                hours + " ساعة<br>" + 
+                minutes + " دقيقة<br>" + 
+                seconds + " ثانية<br>" +
+                "يوم ميلادك القادم سيكون يوم " + nextBirthdayDay + " الموافق " + 
+                nextBirthday.toLocaleDateString('ar-EG') + ".";
+        }
+
+        function clearResults() {
+            document.getElementById('result').innerHTML = "";
+            clearInterval(interval);
+            clearInterval(birthdayInterval);
+            hideLoader();
+        }
+
+        function saveBirthdate() {
+            const birthdate = document.getElementById('birthdate').value;
+            if (birthdate) {
+                localStorage.setItem('savedBirthdate', birthdate);
+                document.getElementById('result').innerHTML = "تم حفظ تاريخ الميلاد بنجاح!";
+                setTimeout(() => {
+                    if (document.getElementById('result').innerHTML === "تم حفظ تاريخ الميلاد بنجاح!") {
+                        document.getElementById('result').innerHTML = "";
+                    }
+                }, 2000);
+            } else {
+                document.getElementById('result').innerHTML = 
+                    '<span class="error">لا يوجد تاريخ لحفظه!</span>';
+            }
+        }
+
+        function showLoader() {
+            document.getElementById('loader').style.display = 'block';
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
