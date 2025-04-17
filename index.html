@@ -2,340 +2,212 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض مواقعي | هبة كتانة</title>
-    <link rel="icon" href="images/Hiba.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="Hiba.png" type="image/png">
+    
+    <title>هبة كتانة</title>
     <style>
-        :root {
-            --bg-color: #1a1a2e;
-            --secondary-bg: #16213e;
-            --text-color: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --btn-color: #4CAF50;
-            --marquee-bg: rgba(255, 255, 255, 0.1);
-            --featured-bg: rgba(255, 215, 0, 0.1);
-            --transition-speed: 0.8s;
+
+body {
+        margin-top: 0px;
+        text-align: center;   
+        background-color: #c7e1ff ;
+        font-family: 'Simplified Arabic';
+        font-size: 16px;   
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #c7e1ff;
         }
 
-        .light-mode {
-            --bg-color: #f8f9fa;
-            --secondary-bg: #e9ecef;
-            --text-color: #212529;
-            --card-bg: rgba(0, 0, 0, 0.05);
-            --btn-color: #2E8B57;
-            --marquee-bg: rgba(0, 0, 0, 0.1);
-            --featured-bg: rgba(255, 215, 0, 0.2);
-        }
-
-        * {
-            transition: 
-                background-color var(--transition-speed) ease,
-                color var(--transition-speed) ease,
-                border-color var(--transition-speed) ease,
-                box-shadow var(--transition-speed) ease;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--bg-color), var(--secondary-bg));
-            color: var(--text-color);
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* زر التبديل */
-        .theme-toggle {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: var(--card-bg);
-            border: 2px solid var(--text-color);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
+        .button-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            flex-direction: column;
+            gap: 20px;
         }
-
-        .theme-toggle i {
-            font-size: 1.3rem;
-            color: var(--text-color);
-            transition: transform 0.5s ease;
-        }
-
-        .theme-toggle:hover i {
-            transform: rotate(30deg);
-        }
-
-        /* نص متحرك */
-        .marquee {
-            background: var(--marquee-bg);
-            padding: 12px 0;
-            white-space: nowrap;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 30px;
-        }
-
-        .marquee p {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 18s linear infinite;
-            font-size: 18px;
-            margin: 0;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .header {
+        .button {
+            width: 200px;
+            padding: 10px;
             text-align: center;
-            padding: 20px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
-
-        /* قسم البطاقات المميزة */
-        .featured-section {
-            background: var(--featured-bg);
-            padding: 30px 20px;
-            margin-bottom: 30px;
-            border-top: 2px solid gold;
-            border-bottom: 2px solid gold;
-        }
-
-        .featured-section h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: gold;
-        }
-
-        /* قسم البطاقات العادية */
-        .regular-section h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s forwards;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card.featured {
-            border: 3px solid gold;
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
-        }
-
-        .card.featured::after {
-            content: "★ مميز";
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: gold;
-            color: black;
-            padding: 3px 10px;
+            background-color: #8fb3d8;
+            color: #ffffff;
+            border: 2px solid #c7e1ff;
             border-radius: 5px;
-            font-weight: bold;
-            font-size: 0.9rem;
+        }
+        .button:hover {
+            background-color: #c7e1ff;
+            border: 2px solid #8fb3d8;
+            color: #8fb3d8;
         }
 
-        .card img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+@keyframes Text-Banner {
+      from { transform: translateX(-60%); }
+      to { transform: translateX(40%); }
+    }
 
-        .card:hover img {
-            transform: scale(1.05);
-        }
+  .Text-bar span {
+    display: inline-block;
+    padding-left: 100%;
+    padding-left: 100%;
+    animation: Text-Banner 30s linear infinite;
+  }
 
-        .card-content {
-            padding: 15px;
-            text-align: center;
-        }
+    .Text-bar {
+      white-space: nowrap; 
+      color: #ffffff; 
+      font-size: 16px; 
+      font-family: 'Simplified Arabic';
+      text-align: right;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 8px 20px;
-            background: var(--btn-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
+    .Solid-Banner {
+      position: fixed; 
+      top: 55px;
+      width: 100%; 
+      background-color: #c7e1ff; 
+      border-bottom: 5px solid #8fb3d8;
+    }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
+    .logo {
+      position: fixed;
+      top: 0px;
+      left: 10px;
+      width: 55px; 
+      height: 55px;
+      background-size: cover;
+      background-image: url('Hiba.png');
+      z-index: 9999; 
+    }
+   
 
-        /* التجاوبية */
-        @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-            
-            .theme-toggle {
-                bottom: 20px;
-                left: 20px;
-                width: 45px;
-                height: 45px;
-            }
-        }
+    .navbar-nav .nav-link {
+      text-align: right;}
+    .dropdown-menu {
+      text-align: right;}
+
+        #enterDetails {float: left; width: 50%;  background-color: #8fb3d8; color: #c7e1ff;}
+        #findDetails {float: left; width: 50%; background-color: #c7e1ff; color: #8fb3d8;}
+        input {width: 120px;}
+        
     </style>
 </head>
 <body>
-    <!-- زر التبديل -->
-    <div class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-    </div>
 
-    <!-- نص متحرك -->
-    <div class="marquee">
-        <p>تعريف بي: أنا الطالبة هبة كتانة من الصف الثامن في مدرسة إناث قلقيلية الشرعية الثانوية</p>
-    </div>
-    
-    <!-- العنوان الرئيسي -->
-    <div class="header">
-        <h1>معرض مواقعي</h1>
-        <p>تصفح مجموعة المواقع التي قمت بتطويرها</p>
-    </div>
-    
-    <!-- قسم البطاقات المميزة -->
-    <div class="featured-section">
-        <h2><i class="fas fa-crown"></i> المواقع المميزة</h2>
-        <div class="gallery">
-            <!-- استبدل 'images/featured1.png' باسم ملفك الحقيقي -->
-            <div class="card featured" style="animation-delay: 0.1s;">
-                <img src="1.png" alt="نور الإيمان">
-                <div class="card-content">
-                    <h3>موقع مميز 1</h3>
-                    <a href="nur_al'iiman.html" class="btn">زيارة الموقع</a>
-                </div>
-            </div>
-            
-            <!-- استبدل 'images/featured2.png' باسم ملفك الحقيقي -->
-            <div class="card featured" style="animation-delay: 0.2s;">
-                <img src="images/featured2.png" alt="موقع مميز 2">
-                <div class="card-content">
-                    <h3>موقع مميز 2</h3>
-                    <a href="#" class="btn">زيارة الموقع</a>
-                </div>
-            </div>
+  <div class="button-container">
+    <a href="Messages_to_my_teachers.html" class="button">🌹 شكراً معلماتي 🌹</a>
+    <a href="weather.html" class="button">☁️ الطقس في العالم ☁️</a>
+    <a href="Download Palestinian curriculum books.html" class="button">تحميل كتب المنهاج الفلسطيني</a>
+    <a href="https://bit.ly/4fcUDbN" class="button">⭐ مواقع أستخدمها ⭐</a>
+    <a href="https://scratch.mit.edu/users/1Hiba7/" class="button">ملفي الشخصي في سكراتش</a>
+    <!-- أضف هنا المزيد من الأزرار -->
+</div>
+  
+
+<div class="Solid-Banner">
+    <div class="Text-bar">
+      <span>تعريف بي: أنا الطالبة هبة كتانة من الصف الثامن في مدرسة إناث قلقيلية الشرعية الثانوية</span>
+  </div>
+  <div class="logo"></div>
+  
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html">الرئيسية<span class="sr-only">(current)</span></a>
+
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+     مجسمات ورسومات
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+        <a class="dropdown-item" href="2D.html"_blank">صورة ثنائية الأبعاد</a>
+        <a class="dropdown-item" href="3D1.html"_blank">مجسم ثلاثي الأبعاد</a>
+      </div>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        مواقع الكترونية
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+          <a class="dropdown-item" href="https://sites.google.com/view/hibakittaneh"_blank">معرض لمشاريعي ومواقعي</a>
+          <a class="dropdown-item" href="https://sites.google.com/view/qtp431853910/%D8%A7%D9%84%D8%B5%D9%81%D8%AD%D8%A9-%D8%A7%D9%84%D8%B1%D8%A6%D9%8A%D8%B3%D9%8A%D8%A9"_blank">موقعي للجنة التكنلوجية</a>
+          <a class="dropdown-item" href="https://safa2jaidi.my.canva.site/hiba-kittaneh"_blank">موقعي في كانفا</a>
+          <a class="dropdown-item" href="https://bit.ly/m/Hiba-Kittaneh"_blank">موقعي في بتلي</a>
+          <a class="dropdown-item" href="1.html"_blank">العد التنازلي للمناسبات الدينية 🕐</a>
+          <a class="dropdown-item" href="2.html"_blank">حساب عمرك 🖩</a>
+          <a class="dropdown-item" href="3.html"target="_blank">موقعي الأول في جت هب ➊</a>
+          <a class="dropdown-item" href="4.html"_blank">عد تازلي لموعد نزول علامات التوجيهي 🕐</a>
+          <a class="dropdown-item" href="5.html"_blank">عد تازلي لبداية المدارس 🕐</a>
+          <a class="dropdown-item" href="6.html"_blank">📿 عداد التسبيح 📿</a>
+          <a class="dropdown-item" href="7.html"_blank">كود برمجي تم التعديل عليه ✏</a>
+          <a class="dropdown-item" href="8.html"_blank">🛞 عجلة عشوائية 🛞</a>
+          <a class="dropdown-item" href="9.html"_blank">انتقاء الألوان من الصور</a>
+          <a class="dropdown-item" href="10.html"_blank">زخرفة الأسماء باللغة العربية والانجليزية</a>
+          <a class="dropdown-item" href="11.html"_blank">🖩 آلة حاسبة 🖩</a>
+          <a class="dropdown-item" href="Messages_to_my_teachers.html"_blank">🌹 شكراً معلماتي 🌹</a>
+          <a class="dropdown-item" href="weather.html"_blank">☁️ الطقس في العالم ☁️</a>
+
         </div>
-    </div>
-    
-    <!-- قسم البطاقات العادية -->
-    <div class="regular-section">
-        <h2><i class="fas fa-th"></i> جميع المواقع</h2>
-        <div class="gallery">
-            <!-- استبدل 'images/site1.png' باسم ملفك الحقيقي -->
-            <div class="card" style="animation-delay: 0.3s;">
-                <img src="images/site1.png" alt="موقع 1">
-                <div class="card-content">
-                    <h3>موقع 1</h3>
-                    <a href="#" class="btn">زيارة الموقع</a>
-                </div>
-            </div>
-            
-            <!-- استبدل 'images/site2.png' باسم ملفك الحقيقي -->
-            <div class="card" style="animation-delay: 0.4s;">
-                <img src="images/site2.png" alt="موقع 2">
-                <div class="card-content">
-                    <h3>موقع 2</h3>
-                    <a href="#" class="btn">زيارة الموقع</a>
-                </div>
-            </div>
-            
-            <!-- استبدل 'images/site3.png' باسم ملفك الحقيقي -->
-            <div class="card" style="animation-delay: 0.5s;">
-                <img src="images/site3.png" alt="موقع 3">
-                <div class="card-content">
-                    <h3>موقع 3</h3>
-                    <a href="#" class="btn">زيارة الموقع</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        // تبديل الوضع مع تأثير تدرج بطيء
-        const themeToggle = document.getElementById('themeToggle');
-        const icon = themeToggle.querySelector('i');
-        
-        // تحميل التفضيل المحفوظ
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-mode');
-            icon.classList.replace('fa-moon', 'fa-sun');
-        }
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          الوصول السريع
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+            <a class="dropdown-item" href="https://drive.google.com/file/d/12l3FwBkEsHEt0S6yybuTJ8wrKpVYhW1X/view"_blank">الوصول السريع</a>
+            <a class="dropdown-item" href="https://drive.google.com/drive/folders/109kAgQF7koxGeCVL_u4m0Gvpqfp1i35j"_blank">ملخصات التكنولوجيا و البرمجة - ثامن</a>
+            <a class="dropdown-item" href="https://drive.google.com/file/d/1jHyGhsLcwlLyhIj9KMn3KAcjbHKoecee/view?usp=sharing"target="_blank">إلكترونيات الصف الثامن</a>
+          </div>
 
-        // حدث التبديل
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            
-            setTimeout(() => {
-                if (document.body.classList.contains('light-mode')) {
-                    icon.classList.replace('fa-moon', 'fa-sun');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    icon.classList.replace('fa-sun', 'fa-moon');
-                    localStorage.setItem('theme', 'dark');
-                }
-            }, 300);
-        });
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              فيديوهات
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                <a class="dropdown-item" href="https://www.youtube.com/watch?v=-vGDlcEJXBw"_blank">برمجة ونشر موقعك من الهاتف</a>
+                <a class="dropdown-item" href="https://www.youtube.com/watch?v=GVr3t0IOH2U&t=1s"_blank">نشر موقعك على جت هب</a>
+              </div>
+                
+               <li class="nav-item dropdown">
+                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">   
+                قنوات
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                  <a class="dropdown-item" href="https://www.youtube.com/@Safa2Jaidi"_blank">صفاء جعيدي</a>
+                  <a class="dropdown-item" href="https://www.youtube.com/@shar3iagirlsschool"_blank">مدرسة إناث قلقيلية الشرعية الثانوية</a>
+                  <a class="dropdown-item" href="https://www.youtube.com/@qalTechprog"_blank">التكنولوجيا والبرمجة - قلقيلية</a>
+                  <a class="dropdown-item" href="https://www.youtube.com/@1Hiba7"_blank">هبة كتانة - أنا</a>
+                </div>
 
-        // ظهور البطاقات عند التمرير
-        document.addEventListener("DOMContentLoaded", () => {
-            const cards = document.querySelectorAll(".card");
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = "1";
-                        entry.target.style.transform = "translateY(0)";
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            cards.forEach(card => observer.observe(card));
-        });
-    </script>
+                     <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">   
+                  ملفاتي الشخصية
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                    <a class="dropdown-item" href="https://github.com/1Hiba7"_blank">جت هب</a>
+                    <a class="dropdown-item" href="https://scratch.mit.edu/users/1Hiba7/">سكراتش</a>
+                    <a class="dropdown-item" href="https://www.tinkercad.com/users/cq3ytrzP3db">تنكركاد</a>
+                  </div>
+
+    </ul>
+  </div>
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
 </body>
 </html>
